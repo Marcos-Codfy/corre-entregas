@@ -78,14 +78,14 @@ app/
 - [ ] B13. Ícone, splash nativa, nome do app, keystore, `flutter build apk --release`; testar no emulador; copiar APK para `entregas/`.
 
 ## Parte C — Painel web (comércio + suporte/admin)
-- [ ] C1. App panel: shell responsivo, rotas por papel (merchant_owner, merchant_staff, support, admin), modo demonstração com troca de perfil.
-- [ ] C2. Comércio: início (saldo, entregas em andamento, preferidos), nova entrega (endereço com busca simulada + pino no mapa, cálculo de frete, total), acompanhamento no mapa, enviar link + código pelo WhatsApp (link wa.me real), cancelar.
-- [ ] C3. Comércio: histórico com filtros e exportar CSV, carteira e recarga Pix (QR simulado), plano (Avulso atual; Parceiro "em breve"), cupons, motoboys preferidos (até 3), equipe, configurações do comércio.
-- [ ] C4. Página pública de rastreio do cliente (`/r/:token`): mapa, etapa, código.
-- [ ] C5. Suporte: fila sem aceite, mapa de motoboys online, despacho manual, ocorrências críticas com roteiro passo a passo, aprovação de cadastros, chat/WhatsApp com as partes.
-- [ ] C6. Admin: dashboard de KPIs (aceite, tempos, cancelamentos, entregas por comércio, ganho/hora), preços e adicionais, cupons (criar a qualquer momento), repasses, comércios, motoboys, eventos (log), configurações.
-- [ ] C7. Testes de widget das telas críticas; responsividade (celular, tablet, desktop).
-- [ ] C8. `flutter build web --release`, deploy no Cloudflare Pages, conferir no navegador; atualizar site do estudo com links.
+- [x] C1. App panel: shell responsivo, rotas por papel (merchant_owner, merchant_staff, support, admin), modo demonstração com troca de perfil.
+- [x] C2. Comércio: início (saldo, entregas em andamento, preferidos), nova entrega (endereço com busca simulada + pino no mapa, cálculo de frete, total), acompanhamento no mapa, enviar link + código pelo WhatsApp (link wa.me real), cancelar.
+- [x] C3. Comércio: histórico com filtros e exportar CSV, carteira e recarga Pix (QR simulado), plano (Avulso atual; Parceiro "em breve"), cupons, motoboys preferidos (até 3), equipe, configurações do comércio.
+- [x] C4. Página pública de rastreio do cliente (`/r/:token`): mapa, etapa, código.
+- [x] C5. Suporte: fila sem aceite, mapa de motoboys online, despacho manual, ocorrências críticas com roteiro passo a passo, aprovação de cadastros, chat/WhatsApp com as partes.
+- [x] C6. Admin: dashboard de KPIs (aceite, tempos, cancelamentos, entregas por comércio, ganho/hora), preços e adicionais, cupons (criar a qualquer momento), repasses, comércios, motoboys, eventos (log), configurações.
+- [x] C7. Testes de widget das telas críticas; responsividade (celular, tablet, desktop).
+- [x] C8. `flutter build web --release`, deploy no Cloudflare Pages, conferir no navegador; atualizar site do estudo com links.
 
 ## Entrega final da Onda 1
 - [ ] F1. APK em `entregas/app-motoboy.apk` + link do painel + link do design system.
@@ -97,3 +97,4 @@ app/
 - 2026-11-19: Parte A concluída. Catálogo: https://corre-design-system.vinicius-codfy.workers.dev . Repo: https://github.com/Marcos-Codfy/corre-entregas . Link no site do estudo fica para o F2. Próximo: B1.
 - 2026-11-19: B1–B4 feitos (core: domínio, repositórios em memória, DeliveryService, Simulator, DemoEnvironment, 50 testes). Próximo: B5 app courier.
 - 2026-11-19: B5–B12 feitos (app courier completo, 6 testes). Pacote novo packages/shared (providers, apresentação, links). B13 em andamento: keystore em C:/Users/Marcos/.corre-keys (senha em android/key.properties, fora do git). Sem AVD na máquina: conferir visual pela versão web do courier.
+- 2026-11-19: Parte C concluída (painel: 12 testes). Deploys: painel https://corre-painel.vinicius-codfy.workers.dev , motoboy web https://corre-motoboy.vinicius-codfy.workers.dev , DS https://corre-design-system.vinicius-codfy.workers.dev . Admin pode editar preços (core). Próximo: B13 APK final (split arm64 + universal em entregas/), F1 README com prints, F2 docs/site/Obsidian, push.
