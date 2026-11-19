@@ -20,7 +20,7 @@ class ProfilePage extends ConsumerWidget {
     if (me == null) return const SizedBox.shrink();
 
     return SafeArea(
-      child: ListView(
+      child: CorreReadableList(
         padding: const EdgeInsets.all(CorreSpace.lg),
         children: [
           Row(

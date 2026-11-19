@@ -65,7 +65,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final preferredBy = merchants.where((m) => m.preferredCourierIds.contains(me.id)).toList();
 
     return SafeArea(
-      child: ListView(
+      child: CorreReadableList(
         padding: const EdgeInsets.all(CorreSpace.lg),
         children: [
           Row(

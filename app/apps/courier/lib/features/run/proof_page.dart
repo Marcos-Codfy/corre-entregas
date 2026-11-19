@@ -52,7 +52,7 @@ class _ProofPageState extends ConsumerState<ProofPage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Confirmar entrega')),
-      body: ListView(
+      body: CorreReadableList(
         padding: const EdgeInsets.all(CorreSpace.lg),
         children: [
           Text('Peça o código ao cliente', style: context.text.headlineSmall),

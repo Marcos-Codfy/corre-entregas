@@ -20,7 +20,7 @@ class WalletPage extends ConsumerWidget {
     final weekFreight = week.fold<Cents>(0, (s, e) => s + e.amount);
 
     return SafeArea(
-      child: ListView(
+      child: CorreReadableList(
         padding: const EdgeInsets.all(CorreSpace.lg),
         children: [
           Text('Carteira', style: context.text.headlineSmall),

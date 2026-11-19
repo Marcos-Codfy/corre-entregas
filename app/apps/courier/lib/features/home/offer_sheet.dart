@@ -42,6 +42,7 @@ class _OfferOverlayState extends ConsumerState<OfferOverlay> {
           alignment: Alignment.bottomCenter,
           child: SingleChildScrollView(
             child: Container(
+              constraints: const BoxConstraints(maxWidth: 520),
               margin: const EdgeInsets.all(CorreSpace.md),
               padding: const EdgeInsets.all(CorreSpace.lg),
               decoration: BoxDecoration(

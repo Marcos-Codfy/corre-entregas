@@ -112,7 +112,7 @@ class _SignupPageState extends State<SignupPage> {
           onPressed: () => _step == 0 ? context.pop() : setState(() => _step--),
         ),
       ),
-      body: ListView(
+      body: CorreReadableList(
         padding: const EdgeInsets.all(CorreSpace.lg),
         children: [
           CorreProgressBar(value: (_step + 1) / 4),

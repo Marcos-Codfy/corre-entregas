@@ -18,7 +18,7 @@ class RulesPage extends ConsumerWidget {
     final rating = me?.rating;
     return Scaffold(
       appBar: AppBar(title: const Text('Nota e regras')),
-      body: ListView(
+      body: CorreReadableList(
         padding: const EdgeInsets.all(CorreSpace.lg),
         children: [
           CorreCard(

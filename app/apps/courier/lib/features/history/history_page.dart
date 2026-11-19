@@ -30,7 +30,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
         .fold<Cents>(0, (s, d) => s + d.courierAmount);
 
     return SafeArea(
-      child: ListView(
+      child: CorreReadableList(
         padding: const EdgeInsets.all(CorreSpace.lg),
         children: [
           Text('Corridas', style: context.text.headlineSmall),

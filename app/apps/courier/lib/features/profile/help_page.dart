@@ -17,7 +17,7 @@ class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Ajuda e suporte')),
-    body: ListView(
+    body: CorreReadableList(
       padding: const EdgeInsets.all(CorreSpace.lg),
       children: [
         CorreCard(

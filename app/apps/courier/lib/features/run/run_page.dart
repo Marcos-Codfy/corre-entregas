@@ -39,6 +39,7 @@ class RunPage extends ConsumerWidget {
     final merchant = ref.watch(merchantProvider(d.merchantId)).value;
     if (d.status.isFinal || d.courierId != me.id) return _Finished(delivery: d);
 
+    final wideLayout = MediaQuery.sizeOf(context).width >= 900;
     final action = RunAction.of(d.status);
     final target = ctrl.targetOf(d);
     // Melhor caminho (A*). No comércio já mostra o próximo trecho, até o cliente.
@@ -46,7 +47,9 @@ class RunPage extends ConsumerWidget {
     final route = atMerchant
         ? bestRoute(d.pickup.point, d.dropoff.point)
         : (target == null ? null : bestRoute(me.position, target));
-    final left = atMerchant ? 0.0 : (route?.km ?? ctrl.remainingKm(d));
+    // Perto do destino vale a distância direta (a rota liga as pontas aos cruzamentos e soma uns metros).
+    final direct = ctrl.remainingKm(d);
+    final left = atMerchant ? 0.0 : (direct < .3 ? direct : (route?.km ?? direct));
     final goingToCustomer = d.status == DeliveryStatus.toCustomer || d.status == DeliveryStatus.pickedUp;
     final idx = _stepIndex(d.status);
 
@@ -100,7 +103,10 @@ class RunPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
+      // Tablet deitado: mapa à esquerda e painel da corrida à direita.
+      body: Flex(
+        direction: wideLayout ? Axis.horizontal : Axis.vertical,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: CorreMapView(
@@ -116,9 +122,10 @@ class RunPage extends ConsumerWidget {
             ),
           ),
           Container(
+            width: wideLayout ? 420 : null,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(CorreRadius.lg)),
+              borderRadius: wideLayout ? BorderRadius.zero : const BorderRadius.vertical(top: Radius.circular(CorreRadius.lg)),
               boxShadow: CorreShadow.raised,
             ),
             padding: const EdgeInsets.fromLTRB(CorreSpace.lg, CorreSpace.lg, CorreSpace.lg, CorreSpace.lg),
