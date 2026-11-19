@@ -27,11 +27,11 @@
 | Arquitetura | Clean Architecture por feature: `domain` (entidades, regras, contratos de repositório) → `data` (repositórios fake/in-memory) → `presentation` (MVVM com Riverpod) |
 | Estado / DI | Riverpod (providers trocáveis: fake na Onda 1, Supabase na Onda 2) |
 | Rotas | go_router |
-| Modelos | freezed + json_serializable |
+| Modelos | classes imutáveis escritas à mão (sem codegen, build mais simples) |
 | Mapa | flutter_map + tiles OSM; rotas simuladas por interpolação |
 | Persistência local | shared_preferences (perfil, preferências, histórico demo) |
 | Testes | unit (preço, máquina de estados, despacho), widget (componentes do DS), golden opcional |
-| Hospedagem do painel | Cloudflare Pages (fallback: Vercel) |
+| Hospedagem | Cloudflare Workers com assets estáticos (`wrangler deploy`, arquivo wrangler.jsonc em cada app web) |
 | APK | `flutter build apk --release` com keystore próprio fora do repositório |
 
 ## Estrutura
@@ -50,17 +50,17 @@ app/
 ---
 
 ## Parte A — Design system + sample
-- [ ] A0. Ambiente: conferir Flutter, Android SDK, Java, `flutter doctor`; instalar o que faltar. `git init` na raiz com .gitignore.
-- [ ] A1. Criar workspace `app/` e pacotes vazios (design_system, core, ds_sample, courier, panel), lints (`very_good_analysis` ou `flutter_lints` estrito).
-- [ ] A2. Tokens: cores (marca, neutros, sucesso/aviso/erro/info, status de entrega), tipografia (Google Fonts embarcada), espaçamentos, raios, sombras, durações. Claro e escuro. Base: prototipo/design-system.html.
-- [ ] A3. `ThemeData` claro/escuro gerado dos tokens + extensões de tema (cores de status).
-- [ ] A4. Componentes base: botões (primário, secundário, fantasma, perigo, carregando), campos (texto, senha, telefone, moeda, busca), seleção (chip, switch, radio, checkbox, dropdown), cards, badges de status, avatar, lista, divisores.
-- [ ] A5. Componentes de feedback: snackbar/toast, diálogo de confirmação, bottom sheet, estado vazio, erro, skeleton, indicador de progresso.
-- [ ] A6. Componentes do domínio: card de oferta com contagem regressiva, linha do tempo de etapas, entrada de código de 4 dígitos, resumo de preço, card de entrega, marcador de moto/coleta/entrega para mapa, KPI tile, tabela de dados (painel).
-- [ ] A7. Layout: scaffold mobile com navegação inferior, shell web com menu lateral responsivo, breakpoints.
-- [ ] A8. App ds_sample: catálogo navegável de todos os tokens e componentes, alternância claro/escuro, estados (normal, desabilitado, erro, carregando).
-- [ ] A9. Testes de widget dos componentes principais; README do design_system (como usar, como adicionar componente).
-- [ ] A10. Publicar ds_sample (Cloudflare Pages) e atualizar o site do estudo com o link.
+- [x] A0. Ambiente: conferir Flutter, Android SDK, Java, `flutter doctor`; instalar o que faltar. `git init` na raiz com .gitignore.
+- [x] A1. Criar workspace `app/` e pacotes vazios (design_system, core, ds_sample, courier, panel), lints (`very_good_analysis` ou `flutter_lints` estrito).
+- [x] A2. Tokens: cores (marca, neutros, sucesso/aviso/erro/info, status de entrega), tipografia (Google Fonts embarcada), espaçamentos, raios, sombras, durações. Claro e escuro. Base: prototipo/design-system.html.
+- [x] A3. `ThemeData` claro/escuro gerado dos tokens + extensões de tema (cores de status).
+- [x] A4. Componentes base: botões (primário, secundário, fantasma, perigo, carregando), campos (texto, senha, telefone, moeda, busca), seleção (chip, switch, radio, checkbox, dropdown), cards, badges de status, avatar, lista, divisores.
+- [x] A5. Componentes de feedback: snackbar/toast, diálogo de confirmação, bottom sheet, estado vazio, erro, skeleton, indicador de progresso.
+- [x] A6. Componentes do domínio: card de oferta com contagem regressiva, linha do tempo de etapas, entrada de código de 4 dígitos, resumo de preço, card de entrega, marcador de moto/coleta/entrega para mapa, KPI tile, tabela de dados (painel).
+- [x] A7. Layout: scaffold mobile com navegação inferior, shell web com menu lateral responsivo, breakpoints.
+- [x] A8. App ds_sample: catálogo navegável de todos os tokens e componentes, alternância claro/escuro, estados (normal, desabilitado, erro, carregando).
+- [x] A9. Testes de widget dos componentes principais; README do design_system (como usar, como adicionar componente).
+- [x] A10. Publicar ds_sample (Cloudflare Pages) e atualizar o site do estudo com o link.
 
 ## Parte B — App do motoboy (Android)
 - [ ] B1. core/domínio: entidades (Courier, Merchant, Delivery, Address, Offer, Wallet, Payout, Rating, Event), enums de estado, máquina de estados da entrega (03-produto), regra de preço (R$ 8 até 5 km + R$ 1,50/km arredondando 0,5 km; adicionais), regra de cancelamento (R$ 3 após 1 km), elegibilidade (nota ≥ 4,0).
@@ -93,3 +93,5 @@ app/
 
 ## Diário
 - 2026-11-19: plano criado. Aguardando "comece".
+- 2026-11-19: A0–A7 feitos (workspace, tokens, tema claro/escuro, componentes). Próximo: A8 ds_sample.
+- 2026-11-19: Parte A concluída. Catálogo: https://corre-design-system.vinicius-codfy.workers.dev . Repo: https://github.com/Marcos-Codfy/corre-entregas . Link no site do estudo fica para o F2. Próximo: B1.
