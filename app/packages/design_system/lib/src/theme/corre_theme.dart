@@ -123,6 +123,11 @@ abstract final class CorreTheme {
         indicatorColor: palette.brandLight,
         labelTextStyle: WidgetStatePropertyAll(text.labelSmall),
       ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Colors.white : palette.ink3),
+        trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? palette.brand : surface),
+        trackOutlineColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? palette.brand : palette.ink3),
+      ),
       navigationRailTheme: NavigationRailThemeData(backgroundColor: surface, indicatorColor: palette.brandLight),
     );
   }
