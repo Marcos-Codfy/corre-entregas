@@ -33,7 +33,7 @@ class _NewDeliveryPageState extends ConsumerState<NewDeliveryPage> {
   final _orderValue = TextEditingController();
   Address? _address;
   final _tags = <String>{'1 sacola'};
-  bool _extraStop = false, _rain = false, _sending = false;
+  bool _extraStop = false, _rain = false, _sending = false, _remember = true;
   String? _nameErr, _phoneErr, _addrErr;
   List<Address> _results = const [];
 
@@ -76,7 +76,90 @@ class _NewDeliveryPageState extends ConsumerState<NewDeliveryPage> {
             rainOrLateNight: _rain,
             orderValue: cents == 0 ? null : cents,
             waiveFee: waive,
+            rememberCustomer: _remember,
           );
+      } catch (_) {
+        if (waive) credits.add(1);
+        rethrow;
+      }
+      unawaited(ref.read(simulatorProvider).runDispatch(d.id));
+      if (mounted) context.go('/entrega/${d.id}');
+    } on BusinessError catch (e) {
+      if (mounted) CorreToast.show(context, e.message, tone: CorreTone.error);
+    } finally {
+      if (mounted) setState(() => _sending = false);
+    }
+  }
+
+  /// Pedido repetido: o comércio confere o endereço antes (o cliente pode ter mudado).
+  Future<void> _repeat(SavedCustomer c) async {
+    final choice = await showCorreSheet<String>(
+      context,
+      title: 'Repetir para ${c.customer.firstName}?',
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        const CorreBanner(
+          tone: CorreTone.warning,
+          icon: Icons.fact_check_outlined,
+          message: 'Confira com o cliente: o endereço do pedido de hoje é este mesmo?',
+        ),
+        const SizedBox(height: CorreSpace.md),
+        CorreCard(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(c.customer.name, style: context.text.titleMedium),
+            Text(formatPhone(c.customer.phone), style: context.text.bodySmall),
+            const SizedBox(height: CorreSpace.sm),
+            Row(children: [
+              const Icon(Icons.place_outlined, size: 20),
+              const SizedBox(width: CorreSpace.sm),
+              Expanded(child: Text(c.address.short, style: context.text.titleSmall)),
+            ]),
+            if (c.notes.isNotEmpty) Text('Obs.: ${c.notes}', style: context.text.bodySmall),
+            Text('Usado ${c.timesUsed} vezes · último ${ddmm(c.lastUsed)}', style: context.text.bodySmall),
+          ]),
+        ),
+        const SizedBox(height: CorreSpace.sm),
+        SizedBox(
+          height: 160,
+          child: CorreMapView(
+            interactive: false,
+            fitToPins: true,
+            pins: [
+              CorreMapPin(point: ref.read(myMerchantProvider)!.address.point.latLng, kind: CorreMarkerKind.pickup),
+              CorreMapPin(point: c.address.point.latLng, kind: CorreMarkerKind.dropoff),
+            ],
+          ),
+        ),
+        const SizedBox(height: CorreSpace.md),
+        CorreButton(label: 'Endereço confere, chamar motoboy', icon: Icons.check, onPressed: () => Navigator.of(context).pop('ok')),
+        const SizedBox(height: CorreSpace.sm),
+        CorreButton(label: 'Mudou de endereço', variant: CorreButtonVariant.ghost, onPressed: () => Navigator.of(context).pop('edit')),
+        TextButton(onPressed: () => Navigator.of(context).pop('delete'), child: const Text('Apagar cliente salvo')),
+      ]),
+    );
+    if (!mounted || choice == null) return;
+    if (choice == 'delete') {
+      await ref.read(environmentProvider).savedCustomers.delete(c.id);
+      if (mounted) CorreToast.show(context, 'Cliente apagado');
+      return;
+    }
+    if (choice == 'edit') {
+      setState(() {
+        _name.text = c.customer.name;
+        _phone.text = formatPhone(c.customer.phone);
+        _notes.text = c.notes;
+        _address = null;
+        _search.clear();
+        _addrErr = 'Busque o endereço novo do cliente';
+      });
+      return;
+    }
+    setState(() => _sending = true);
+    try {
+      final credits = ref.read(feeWaiverCreditsProvider.notifier);
+      final waive = credits.consume();
+      final Delivery d;
+      try {
+        d = await ref.read(serviceProvider).repeatFor(c, addressConfirmed: true, tags: _tags.toList(), waiveFee: waive);
       } catch (_) {
         if (waive) credits.add(1);
         rethrow;
@@ -93,12 +176,27 @@ class _NewDeliveryPageState extends ConsumerState<NewDeliveryPage> {
   @override
   Widget build(BuildContext context) {
     final merchant = ref.watch(myMerchantProvider);
+    final saved = ref.watch(savedCustomersProvider(ref.watch(myMerchantIdProvider))).value ?? const <SavedCustomer>[];
     if (merchant == null) return const SizedBox.shrink();
     final service = ref.read(serviceProvider);
     final quote = _address == null ? null : service.quoteFor(merchant, _address!.point, extraStops: _extraStop ? 1 : 0, rainOrLateNight: _rain);
     final wide = context.screenSize != CorreScreenSize.mobile;
 
     final form = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      if (saved.isNotEmpty) ...[
+        Text('Clientes frequentes', style: context.text.labelMedium),
+        const SizedBox(height: CorreSpace.xs + 2),
+        Wrap(spacing: CorreSpace.sm, runSpacing: CorreSpace.sm, children: [
+          for (final c in saved.take(6))
+            ActionChip(
+              avatar: const Icon(Icons.replay, size: 18),
+              label: Text('${c.customer.firstName} · ${c.address.district.replaceAll('Plano Diretor ', 'PD ')}'),
+              tooltip: 'Repetir pedido para ${c.customer.name}',
+              onPressed: _sending ? null : () => _repeat(c),
+            ),
+        ]),
+        const SizedBox(height: CorreSpace.md),
+      ],
       CorreTextField(label: 'Retirada', initialValue: '${merchant.name} · ${merchant.address.line}', enabled: false, prefixIcon: Icons.storefront),
       const SizedBox(height: CorreSpace.md),
       CorreTextField(
@@ -156,6 +254,7 @@ class _NewDeliveryPageState extends ConsumerState<NewDeliveryPage> {
       const SizedBox(height: CorreSpace.sm),
       CorreSwitchTile(title: 'Segunda parada na mesma rota (+R\$ 2,00)', subtitle: '2 clientes no mesmo caminho', value: _extraStop, onChanged: (v) => setState(() => _extraStop = v)),
       CorreSwitchTile(title: 'Chuva ou após 23h (+R\$ 3,00)', subtitle: 'Vai 100% para o motoboy', value: _rain, onChanged: (v) => setState(() => _rain = v)),
+      CorreCheckbox(label: 'Salvar cliente para repetir pedidos', value: _remember, onChanged: (v) => setState(() => _remember = v ?? true)),
       const SizedBox(height: CorreSpace.sm),
       const CorreBanner(icon: Icons.money_off, message: 'O motoboy só entrega: o cliente paga o pedido direto a você.'),
     ]);

@@ -24,11 +24,34 @@ class MerchantHomePage extends ConsumerWidget {
     final todaySpent = today.fold<Cents>(0, (s, d) => s + (d.status == DeliveryStatus.delivered ? d.merchantTotal : 0));
     final online = couriers.values.where((c) => c.isOnline && Geo.roadKm(c.position, merchant.address.point) <= 10).length;
     final ifoodCommission = today.fold<int>(0, (s, d) => s + ((d.orderValue ?? 0) * .262).round());
+    final month = all.where((d) => d.status == DeliveryStatus.delivered && d.createdAt.year == now.year && d.createdAt.month == now.month).toList();
+    final savings = SavingsReport.from(month);
 
     return CorrePage(children: [
       Text('Boa noite, ${merchant.name}', style: context.text.headlineSmall),
       Text('${merchant.address.short} · $online motoboys online a até 10 km', style: context.text.bodyMedium),
       const SizedBox(height: CorreSpace.lg),
+      if (role?.canSeeFinance ?? false) ...[
+        CorreCard(
+          tone: CorreTone.success,
+          child: Row(children: [
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Você economizou este mês', style: context.text.bodyMedium),
+                Text(formatCents(savings.saved), style: context.text.displaySmall?.copyWith(color: context.palette.success)),
+                Text(
+                  '${savings.count} entregas: ${formatCents(savings.paid)} aqui contra ~${formatCents(savings.ifood)} no iFood Entrega (23% + 3,2% do pedido).',
+                  style: context.text.bodySmall,
+                ),
+              ]),
+            ),
+            if (context.screenSize != CorreScreenSize.mobile) Icon(Icons.savings_outlined, size: 56, color: context.palette.success),
+          ]),
+        ),
+        const SizedBox(height: CorreSpace.xs),
+        Text('Quando o valor do pedido não foi informado, a conta usa R\$ 50 como referência.', style: context.text.bodySmall),
+        const SizedBox(height: CorreSpace.lg),
+      ],
       CorreButton(
         label: 'Pedir entregador',
         icon: Icons.two_wheeler,
@@ -87,5 +110,25 @@ class MerchantHomePage extends ConsumerWidget {
               ]),
       ),
     ]);
+  }
+}
+
+/// Comparação com o Plano Entrega do iFood (23% de comissão + 3,2% de pagamento online).
+class SavingsReport {
+  const SavingsReport(this.count, this.paid, this.ifood);
+  final int count;
+  final Cents paid, ifood;
+  Cents get saved => ifood > paid ? ifood - paid : 0;
+
+  static const ifoodRate = .262;
+  static const defaultOrderValue = 5000;
+
+  static SavingsReport from(List<Delivery> delivered) {
+    var paid = 0, ifood = 0;
+    for (final d in delivered) {
+      paid += d.merchantTotal;
+      ifood += ((d.orderValue ?? defaultOrderValue) * ifoodRate).round();
+    }
+    return SavingsReport(delivered.length, paid, ifood);
   }
 }

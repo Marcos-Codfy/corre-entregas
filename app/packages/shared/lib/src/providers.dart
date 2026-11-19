@@ -20,6 +20,7 @@ final eventsProvider = StreamProvider<List<DomainEvent>>((ref) => ref.watch(envi
 final deliveryProvider = StreamProvider.family<Delivery?, String>((ref, id) => ref.watch(environmentProvider).deliveries.watch(id));
 final courierProvider = StreamProvider.family<Courier?, String>((ref, id) => ref.watch(environmentProvider).couriers.watch(id));
 final merchantProvider = StreamProvider.family<Merchant?, String>((ref, id) => ref.watch(environmentProvider).merchants.watch(id));
+final savedCustomersProvider = StreamProvider.family<List<SavedCustomer>, String>((ref, merchantId) => ref.watch(environmentProvider).savedCustomers.watch(merchantId));
 final walletProvider = StreamProvider.family<List<WalletEntry>, String>((ref, ownerId) => ref.watch(environmentProvider).wallet.watch(ownerId));
 
 /// Relógio que atualiza a tela a cada segundo (contagens e "há X min").
