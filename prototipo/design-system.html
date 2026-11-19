@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Corre — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--pri:#0E7C66;--pri-d:#0A5C4C;--pri-l:#E3F4EF;--acc:#F2A93B;--acc-l:#FDF1DC;--ink:#16202A;--ink2:#4A5866;--ink3:#8695A3;--bg:#EEF1F4;--sur:#FFFFFF;--line:#E2E7EC;--ok:#1F9D55;--warn:#D98E04;--err:#D64545;--info:#2F6FDE;--r-sm:8px;--r:14px;--r-lg:22px;--sh:0 2px 10px rgba(22,32,42,.08);font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}body{background:var(--bg);color:var(--ink);padding:24px 16px;max-width:980px;margin:auto}
+h1{font-size:28px}h2{font-size:18px;margin:28px 0 12px}p{color:var(--ink2);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.sw{background:var(--sur);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);font-size:12px}.sw div{height:64px}.sw p{padding:8px;font-size:12px}
+.card{background:var(--sur);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.btn{border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:700;margin:0 8px 8px 0;cursor:pointer;background:var(--pri);color:#fff}
+.sec{background:var(--pri-l);color:var(--pri-d)}.acc{background:var(--acc);color:var(--ink)}.ghost{background:transparent;border:1px solid var(--line);color:var(--ink2)}.dan{background:#fff;color:var(--err);border:1px solid #f3caca}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin:0 6px 6px 0}
+.b-ok{background:#DDF3E6;color:var(--ok)}.b-warn{background:var(--acc-l);color:#9A6200}.b-err{background:#FBE3E3;color:var(--err)}.b-info{background:#E2ECFC;color:var(--info)}.b-mut{background:#EDF0F3;color:var(--ink2)}
+.sp{display:flex;align-items:center;gap:12px;margin-bottom:6px;font-size:13px}.sp i{background:var(--pri);height:14px;display:block;border-radius:3px}
+code{font-size:12px;background:#fff;padding:2px 6px;border-radius:6px}
+</style></head>
+<body><div id="sitenav" style="position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e3e6ec;padding:10px 16px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center"><a href="../index.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Início</a><a href="../docs/html/01-mercado.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Mercado</a><a href="../docs/html/02-estrategia.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Estratégia</a><a href="../docs/html/03-produto.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Produto</a><a href="../docs/html/04-requisitos.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Requisitos</a><a href="../docs/html/05-economia.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Economia</a><a href="../docs/html/06-infra-custo-zero.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Infra</a><a href="../docs/html/07-duvidas-respondidas.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Dúvidas</a><a href="index.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Protótipo</a><a href="design-system.html" style="color:#fff;background:#e85d1f;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Design system</a></div>
+<h1 style="color:var(--pri)">corre<span style="color:var(--acc)">.</span> · Design System</h1>
+<p>Tokens usados no protótipo (<a href="index.html">index.html</a>). Verde-petróleo transmite confiança e dinheiro; âmbar marca ação e urgência. Não usa cores de marcas concorrentes.</p>
+
+<h2>Cores</h2><div class="grid" id="cores"></div>
+
+<h2>Tipografia — Plus Jakarta Sans</h2>
+<div class="card"><p style="font-size:26px;font-weight:800;color:var(--ink)">Display 26/800 · R$ 96,50</p><p style="font-size:19px;font-weight:700;color:var(--ink)">Título 19/700 · Nova entrega</p><p style="font-size:15px;font-weight:700;color:var(--ink)">Subtítulo 15/700 · Em andamento</p><p style="font-size:14px">Corpo 14/400 · O valor fica reservado do seu saldo.</p><p style="font-size:12px">Apoio 12/400 · Chega em ~6 min</p><p style="font-size:11px;color:var(--ink3)">Legenda 11/400 · Expira em 29:41</p></div>
+
+<h2>Espaçamentos e raios</h2>
+<div class="card"><div id="esp"></div><p style="margin-top:10px">Raios: <code>--r-sm 8px</code> campos/chips · <code>--r 14px</code> cards · <code>--r-lg 22px</code> destaque · botões 12px</p></div>
+
+<h2>Botões</h2><div class="card"><button class="btn">Primário</button><button class="btn acc">Ação principal (Pedir entregador)</button><button class="btn sec">Secundário</button><button class="btn ghost">Neutro</button><button class="btn dan">Destrutivo</button></div>
+
+<h2>Badges de status da entrega</h2><div class="card">
+<span class="badge b-mut">Rascunho</span><span class="badge b-warn">Aguardando pagamento</span><span class="badge b-info">Procurando</span><span class="badge b-info">Aceita</span><span class="badge b-warn">A caminho da coleta</span><span class="badge b-info">No comércio</span><span class="badge b-warn">Coletada</span><span class="badge b-warn">A caminho da entrega</span><span class="badge b-ok">Entregue</span><span class="badge b-ok">Finalizada</span><span class="badge b-err">Sem motoboy</span><span class="badge b-err">Cliente ausente</span><span class="badge b-warn">Retorno</span><span class="badge b-mut">Devolvida</span><span class="badge b-err">Cancelada</span><span class="badge b-err">Ocorrência</span>
+<p style="margin-top:8px">Regra: verde = concluído, âmbar = em movimento, azul = aguardando alguém, vermelho = exige ação, cinza = encerrado/neutro.</p></div>
+
+<h2>Cards</h2><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+<div class="card"><b>Card padrão</b><p>Fundo branco, raio 14, sombra leve.</p></div>
+<div class="card" style="background:linear-gradient(135deg,var(--pri),var(--pri-d));color:#fff"><p style="color:#cfeee6">Hero (saldo/ganhos)</p><p style="font-size:26px;font-weight:800;color:#fff">R$ 132,40</p></div>
+<div class="card" style="border-left:5px solid var(--acc)"><b>Cupom</b><p>Borda âmbar à esquerda.</p></div></div>
+
+<script>
+const C=[['--pri','#0E7C66','Primária'],['--pri-d','#0A5C4C','Primária escura'],['--pri-l','#E3F4EF','Primária clara'],['--acc','#F2A93B','Destaque/ação'],['--acc-l','#FDF1DC','Destaque claro'],['--ink','#16202A','Texto'],['--ink2','#4A5866','Texto 2'],['--ink3','#8695A3','Texto 3'],['--bg','#EEF1F4','Fundo'],['--line','#E2E7EC','Linhas'],['--ok','#1F9D55','Sucesso'],['--warn','#D98E04','Atenção'],['--err','#D64545','Erro'],['--info','#2F6FDE','Informação']];
+document.getElementById('cores').innerHTML=C.map(c=>`<div class="sw"><div style="background:${c[1]}"></div><p><b>${c[2]}</b><br><code>${c[0]}</code> ${c[1]}</p></div>`).join('');
+document.getElementById('esp').innerHTML=[4,8,12,16,24,32].map((v,i)=>`<div class="sp"><code>--s${i+1}</code><i style="width:${v*3}px"></i>${v}px</div>`).join('');
+</script>
+</body></html>

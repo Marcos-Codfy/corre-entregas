@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Corre — Protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pri:#0E7C66;--pri-d:#0A5C4C;--pri-l:#E3F4EF;
+  --acc:#F2A93B;--acc-l:#FDF1DC;
+  --ink:#16202A;--ink2:#4A5866;--ink3:#8695A3;
+  --bg:#EEF1F4;--sur:#FFFFFF;--line:#E2E7EC;
+  --ok:#1F9D55;--warn:#D98E04;--err:#D64545;--info:#2F6FDE;
+  --r-sm:8px;--r:14px;--r-lg:22px;
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;
+  --sh:0 2px 10px rgba(22,32,42,.08);
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-size:14px}
+header.top{padding:20px 24px 8px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:24px;color:var(--pri)}.logo span{color:var(--acc)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:var(--sur);padding:8px 14px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;color:var(--ink2)}
+.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.hint{padding:0 24px;color:var(--ink3);font-size:13px}
+.hint a{color:var(--pri)}
+.stage{display:flex;gap:28px;overflow-x:auto;padding:20px 24px 40px;align-items:flex-start}
+.col{flex:0 0 auto;text-align:center}
+.col h4{font-size:12px;color:var(--ink3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.phone{width:300px;height:620px;background:#111;border-radius:40px;padding:10px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.scr{width:100%;height:100%;background:var(--bg);border-radius:31px;overflow:hidden;position:relative;display:flex;flex-direction:column;text-align:left}
+.sb{height:26px;display:flex;justify-content:space-between;padding:6px 20px 0;font-size:11px;font-weight:700;flex:0 0 auto}
+.body{flex:1;overflow-y:auto;padding:12px 14px 14px}
+.nav{display:flex;justify-content:space-around;border-top:1px solid var(--line);background:var(--sur);padding:8px 0 12px;flex:0 0 auto}
+.nav a{font-size:10px;color:var(--ink3);text-align:center;cursor:pointer;text-decoration:none}
+.nav a b{display:block;font-size:17px}
+.nav a.on{color:var(--pri);font-weight:700}
+h2{font-size:19px;margin-bottom:4px}h3{font-size:15px;margin-bottom:8px}
+.mut{color:var(--ink2);font-size:12px}.sm{font-size:11px;color:var(--ink3)}
+.card{background:var(--sur);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:10px}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:13px;font:inherit;font-weight:700;cursor:pointer;text-align:center;background:var(--pri);color:#fff;margin-top:8px}
+.btn:hover{background:var(--pri-d)}
+.btn.sec{background:var(--pri-l);color:var(--pri-d)}
+.btn.ghost{background:transparent;color:var(--ink2);border:1px solid var(--line)}
+.btn.acc{background:var(--acc);color:var(--ink)}
+.btn.dan{background:#fff;color:var(--err);border:1px solid #f3caca}
+.row{display:flex;gap:8px;align-items:center}.sp{justify-content:space-between}
+.field{margin-bottom:10px}.field label{display:block;font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:4px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;background:#fff}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
+.b-ok{background:#DDF3E6;color:var(--ok)}.b-warn{background:var(--acc-l);color:#9A6200}.b-err{background:#FBE3E3;color:var(--err)}.b-info{background:#E2ECFC;color:var(--info)}.b-mut{background:#EDF0F3;color:var(--ink2)}
+.big{font-size:26px;font-weight:800}
+.hero{background:linear-gradient(135deg,var(--pri),var(--pri-d));color:#fff;border-radius:var(--r-lg);padding:16px;margin-bottom:10px}
+.hero .mut,.hero .sm{color:#cfeee6}
+.map{height:180px;border-radius:var(--r);position:relative;overflow:hidden;background:#DCE8E3;
+ background-image:linear-gradient(#cfdcd6 2px,transparent 2px),linear-gradient(90deg,#cfdcd6 2px,transparent 2px);background-size:34px 34px;margin-bottom:10px}
+.map .rd{position:absolute;background:#fff}
+.pin{position:absolute;width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:var(--sh)}
+.pin i{transform:rotate(45deg);font-style:normal;font-size:12px}
+.moto{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--acc);border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);transition:all 1s linear}
+.steps{list-style:none;margin:6px 0}
+.steps li{display:flex;gap:10px;padding:6px 0;font-size:13px;color:var(--ink3)}
+.steps li:before{content:'';width:12px;height:12px;border-radius:50%;border:2px solid var(--line);margin-top:3px;flex:0 0 auto}
+.steps li.done{color:var(--ink)}.steps li.done:before{background:var(--pri);border-color:var(--pri)}
+.steps li.now{color:var(--pri);font-weight:700}.steps li.now:before{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
+.tog{width:52px;height:30px;border-radius:999px;background:#c9d2da;position:relative;cursor:pointer;flex:0 0 auto}
+.tog:after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.tog.on{background:var(--ok)}.tog.on:after{left:25px}
+.ring{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:6px auto;font-size:28px;font-weight:800;color:var(--pri)}
+.code{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.code input{width:46px;height:54px;text-align:center;font-size:24px;font-weight:800;border:2px solid var(--line);border-radius:12px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc)}
+.li{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.li:last-child{border:0}
+.doc{display:flex;justify-content:space-between;align-items:center;border:1px dashed var(--line);border-radius:10px;padding:9px;margin-bottom:6px;font-size:12px}
+.qr{width:150px;height:150px;margin:10px auto;background:
+ repeating-linear-gradient(90deg,#16202A 0 6px,#fff 6px 12px),#fff;
+ -webkit-mask:repeating-linear-gradient(#000 0 6px,transparent 6px 9px);mask:repeating-linear-gradient(#000 0 6px,transparent 6px 9px);border-radius:6px}
+.overlay{position:absolute;inset:0;background:rgba(22,32,42,.55);display:flex;align-items:flex-end}
+.sheet{background:var(--sur);width:100%;border-radius:24px 24px 0 0;padding:18px}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:600;margin:0 4px 6px 0;cursor:pointer;background:#fff}
+.chip.on{background:var(--pri-l);border-color:var(--pri);color:var(--pri-d)}
+/* desktop admin */
+.desk{width:1040px;height:620px;background:#111;border-radius:14px;padding:8px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.dscr{width:100%;height:100%;background:var(--bg);border-radius:8px;overflow:hidden;display:flex;text-align:left}
+.side{width:190px;background:var(--ink);color:#c8d2dc;padding:16px 12px;flex:0 0 auto}
+.side .logo{font-size:20px;margin-bottom:18px;color:#fff}
+.side a{display:block;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:13px;margin-bottom:2px}
+.side a.on,.side a:hover{background:#26323e;color:#fff}
+.main{flex:1;overflow:auto;padding:18px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--ink3);font-weight:600;padding:8px;border-bottom:1px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+.track{max-width:360px}
+.hide{display:none!important}
+</style>
+</head>
+<body><div id="sitenav" style="position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e3e6ec;padding:10px 16px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center"><a href="../index.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Início</a><a href="../docs/html/01-mercado.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Mercado</a><a href="../docs/html/02-estrategia.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Estratégia</a><a href="../docs/html/03-produto.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Produto</a><a href="../docs/html/04-requisitos.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Requisitos</a><a href="../docs/html/05-economia.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Economia</a><a href="../docs/html/06-infra-custo-zero.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Infra</a><a href="../docs/html/07-duvidas-respondidas.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Dúvidas</a><a href="index.html" style="color:#fff;background:#e85d1f;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Protótipo</a><a href="design-system.html" style="color:#5b6475;text-decoration:none;padding:4px 12px;border-radius:999px;font:500 14px system-ui">Design system</a></div>
+<header class="top">
+  <div class="logo">corre<span>.</span> <span style="font-size:13px;color:var(--ink3);font-weight:600">protótipo navegável · Palmas-TO</span></div>
+  <nav class="tabs" id="tabs">
+    <button data-g="moto" class="on">Motoboy</button>
+    <button data-g="com">Comércio</button>
+    <button data-g="cli">Cliente final</button>
+    <button data-g="adm">Admin / Suporte</button>
+  </nav>
+</header>
+<p class="hint">Clique nos botões dentro das telas para navegar. Dados fictícios. Tokens visuais em <a href="design-system.html">design-system.html</a>.</p>
+
+<!-- ================= MOTOBOY ================= -->
+<section class="stage" data-group="moto">
+  <div class="col"><h4>1 · Entrar</h4><div class="phone"><div class="scr" id="m-login"></div></div></div>
+  <div class="col"><h4>2 · Cadastro e documentos</h4><div class="phone"><div class="scr" id="m-docs"></div></div></div>
+  <div class="col"><h4>3 · Início (online/offline)</h4><div class="phone"><div class="scr" id="m-home"></div></div></div>
+  <div class="col"><h4>4 · Nova corrida</h4><div class="phone"><div class="scr" id="m-offer"></div></div></div>
+  <div class="col"><h4>5 · Corrida em andamento</h4><div class="phone"><div class="scr" id="m-run"></div></div></div>
+  <div class="col"><h4>6 · Comprovar entrega</h4><div class="phone"><div class="scr" id="m-proof"></div></div></div>
+  <div class="col"><h4>7 · Carteira e saque Pix</h4><div class="phone"><div class="scr" id="m-wallet"></div></div></div>
+  <div class="col"><h4>8 · BNota e regras</h4><div class="phone"><div class="scr" id="m-bonus"></div></div></div>
+</section>
+
+<!-- ================= COMÉRCIO ================= -->
+<section class="stage hide" data-group="com">
+  <div class="col"><h4>1 · Entrar</h4><div class="phone"><div class="scr" id="c-login"></div></div></div>
+  <div class="col"><h4>2 · Início</h4><div class="phone"><div class="scr" id="c-home"></div></div></div>
+  <div class="col"><h4>3 · Nova entrega</h4><div class="phone"><div class="scr" id="c-new"></div></div></div>
+  <div class="col"><h4>4 · Acompanhar</h4><div class="phone"><div class="scr" id="c-track"></div></div></div>
+  <div class="col"><h4>5 · Histórico</h4><div class="phone"><div class="scr" id="c-hist"></div></div></div>
+  <div class="col"><h4>6 · Créditos e plano</h4><div class="phone"><div class="scr" id="c-plan"></div></div></div>
+  <div class="col"><h4>7 · Recarga via Pix</h4><div class="phone"><div class="scr" id="c-pix"></div></div></div>
+  <div class="col"><h4>8 · Cupons</h4><div class="phone"><div class="scr" id="c-cup"></div></div></div>
+</section>
+
+<!-- ================= CLIENTE ================= -->
+<section class="stage hide" data-group="cli">
+  <div class="col"><h4>Link de rastreio (sem login)</h4><div class="phone"><div class="scr" id="t-track"></div></div></div>
+  <div class="col"><h4>Entregue</h4><div class="phone"><div class="scr" id="t-done"></div></div></div>
+</section>
+
+<!-- ================= ADMIN ================= -->
+<section class="stage hide" data-group="adm">
+  <div class="col"><h4>Painel web do suporte</h4><div class="desk"><div class="dscr" id="adm"></div></div></div>
+</section>
+
+<script>
+const $=id=>document.getElementById(id);
+const SB='<div class="sb"><span>19:42</span><span>4G ▮▮▮ 82%</span></div>';
+const brl=v=>'R$ '+v.toFixed(2).replace('.',',');
+function nav(items,on,grp){return '<div class="nav">'+items.map(([ic,t,go])=>`<a class="${t===on?'on':''}" onclick="jump('${go}')"><b>${ic}</b>${t}</a>`).join('')+'</div>'}
+const MN=on=>nav([['⌂','Início','m-home'],['◎','Corrida','m-run'],['₿','Carteira','m-wallet'],['★','Regras','m-bonus']],on);
+const CN=on=>nav([['⌂','Início','c-home'],['＋','Pedir','c-new'],['☰','Histórico','c-hist'],['◈','Plano','c-plan']],on);
+function jump(id){const el=$(id);el.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});el.parentElement.style.outline='3px solid var(--acc)';setTimeout(()=>el.parentElement.style.outline='',900)}
+function mapa(motoPos){return `<div class="map">
+ <div class="rd" style="left:0;right:0;top:70px;height:10px"></div><div class="rd" style="top:0;bottom:0;left:120px;width:10px"></div><div class="rd" style="left:0;right:0;top:140px;height:8px"></div>
+ <div class="pin" style="left:30px;top:40px;background:var(--pri)"><i>🏪</i></div>
+ <div class="pin" style="right:30px;top:110px;background:var(--err)"><i>🏠</i></div>
+ <div class="moto" id="motoDot" style="${motoPos}">🛵</div></div>`}
+
+/* ---------- MOTOBOY ---------- */
+$('m-login').innerHTML=SB+`<div class="body" style="display:flex;flex-direction:column;justify-content:center">
+ <div class="logo" style="font-size:38px;text-align:center">corre<span>.</span></div>
+ <p class="mut" style="text-align:center;margin-bottom:22px">Entregas dos comércios de Palmas.<br>Você escolhe quando rodar.</p>
+ <div class="field"><label>E-mail</label><input value="diego@email.com"></div>
+ <div class="field"><label>Senha</label><input type="password" value="12345678"></div>
+ <button class="btn" onclick="jump('m-home')">Entrar</button>
+ <button class="btn ghost" onclick="jump('m-home')">Entrar com Google</button>
+ <button class="btn ghost" onclick="jump('m-docs')">Quero me cadastrar</button>
+ <p class="sm" style="text-align:center;margin-top:14px">Ao continuar você aceita os Termos e a Política de Privacidade.</p></div>`;
+
+$('m-docs').innerHTML=SB+`<div class="body"><h2>Cadastro</h2><p class="mut" style="margin-bottom:10px">Etapa 3 de 4 · Documentos</p>
+ <div class="bar" style="margin-bottom:14px"><i style="width:75%;background:var(--pri)"></i></div>
+ <div class="doc"><span>📄 CNH A definitiva com EAR</span><span class="badge b-ok">Enviada</span></div>
+ <div class="doc"><span>🏍️ CRLV da moto</span><span class="badge b-ok">Enviada</span></div>
+ <div class="doc"><span>🤳 Selfie com a CNH</span><span class="badge b-warn">Pendente</span></div>
+ <div class="doc"><span>🧾 Antecedentes criminais</span><span class="badge b-warn">Pendente</span></div>
+ <div class="doc"><span>🏦 Chave Pix (CPF)</span><span class="badge b-ok">OK</span></div>
+ <div class="card" style="margin-top:10px;background:var(--acc-l);box-shadow:none"><b>Como funciona a aprovação</b><p class="mut">A equipe confere seus documentos em até 24 h. Você recebe o aviso por WhatsApp.</p></div>
+ <button class="btn">Tirar selfie</button><button class="btn ghost" onclick="jump('m-home')">Enviar depois</button></div>`;
+
+let online=true;
+function renderHome(){ $('m-home').innerHTML=SB+`<div class="body">
+ <div class="row sp" style="margin-bottom:10px"><div><p class="sm">Olá,</p><h2>Diego</h2></div>
+ <div class="row"><span class="badge ${online?'b-ok':'b-mut'}">${online?'Online':'Offline'}</span><div class="tog ${online?'on':''}" onclick="online=!online;renderHome()"></div></div></div>
+ <div class="hero"><p class="mut">Ganhos de hoje</p><div class="big">${brl(96.5)}</div><p class="sm">11 entregas · 4h12 online · 38 km</p></div>
+ ${online?`<div class="card row sp"><div><b>Procurando corridas…</b><p class="mut">Plano Diretor Sul · raio 3 km</p></div><span style="font-size:22px">📡</span></div>
+ <button class="btn acc" onclick="jump('m-offer');startOffer()">Simular nova corrida</button>`
+ :`<div class="card"><b>Você está offline</b><p class="mut">Ligue para receber pedidos. Ninguém é penalizado por recusar.</p></div>`}
+ <div class="card" style="margin-top:10px"><h3>Pico de hoje</h3><div class="row sp"><span class="mut">18:00 – 23:00 · região central</span><span class="badge b-info">Mais pedidos</span></div></div>
+ <div class="card"><h3>Comércios que te preferem</h3><p class="mut">Burger da 106 · Açaí do Lago · Farmácia Vida</p></div></div>`+MN('Início')}
+renderHome();
+
+let ofT;
+function startOffer(){clearInterval(ofT);let s=20;const tick=()=>{const r=$('ring');if(!r)return;r.textContent=s;r.style.background=`conic-gradient(var(--pri) ${s/20*360}deg,var(--line) 0)`;r.firstChild;if(s--<=0){clearInterval(ofT);$('ofmsg').textContent='Tempo esgotado: oferta passou para o próximo motoboy.'}};tick();ofT=setInterval(tick,1000)}
+$('m-offer').innerHTML=SB+`<div class="body">${mapa('left:70px;top:90px')}</div>
+ <div class="overlay"><div class="sheet">
+ <div class="row sp"><span class="badge b-info">Nova corrida</span><span class="sm">Preferido do comércio</span></div>
+ <div style="position:relative;width:96px;margin:8px auto"><div class="ring" id="ring" style="background:conic-gradient(var(--pri) 360deg,var(--line) 0)">20</div>
+ <div style="position:absolute;inset:14px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:var(--pri)" id="ringIn">20s</div></div>
+ <div class="row sp"><div><div class="big" style="color:var(--pri)">${brl(8)}</div><p class="sm">Frete 100% seu p/ você · Pix no mesmo dia</p></div><div style="text-align:right"><b>4,2 km</b><p class="sm">~16 min</p></div></div>
+ <ul class="steps"><li class="done">Coleta: Burger da 106 (a 900 m)</li><li class="done">Entrega: Qd. 208 Sul, Al. 12</li></ul>
+ <p class="sm" id="ofmsg">Só entregar, sem cobrança na porta · Volume: 1 sacola</p>
+ <div class="row"><button class="btn dan" style="flex:1" onclick="clearInterval(ofT);jump('m-home')">Recusar</button><button class="btn" style="flex:2" onclick="clearInterval(ofT);jump('m-run')">Aceitar</button></div>
+ </div></div>`;
+// sync inner text of ring
+setInterval(()=>{const r=$('ring'),i=$('ringIn');if(r&&i)i.textContent=r.textContent+'s'},300);
+
+const ST=['Indo ao comércio','Cheguei no comércio','Pedido coletado','Indo ao cliente','Cheguei no cliente'];
+let stp=0;
+function renderRun(){const pos=['left:60px;top:60px','left:34px;top:46px','left:110px;top:66px','left:200px;top:100px','left:230px;top:112px'][stp];
+ $('m-run').innerHTML=SB+`<div class="body">${mapa(pos)}
+ <div class="card"><div class="row sp"><span class="badge b-warn">${ST[stp]}</span><span class="sm">#PL-4821</span></div>
+ <ul class="steps">${ST.map((t,i)=>`<li class="${i<stp?'done':i===stp?'now':''}">${t}</li>`).join('')}</ul>
+ <p class="mut">${stp<2?'Burger da 106 · ACSU-SO 10, conj. 2':'Mariana S. · Qd. 208 Sul, Al. 12, lote 7'}</p>
+ <div class="row"><button class="btn ghost" style="flex:1">Abrir no Maps</button><button class="btn ghost" style="flex:1">Ligar</button></div>
+ <button class="btn" onclick="${stp<4?'stp++;renderRun()':"jump('m-proof')"}">${['Cheguei no comércio','Coletei o pedido','Sair para entrega','Cheguei no cliente','Comprovar entrega'][stp]}</button>
+ <button class="btn ghost" style="font-size:12px">Relatar problema</button></div></div>`+MN('Corrida')}
+renderRun();
+
+$('m-proof').innerHTML=SB+`<div class="body"><h2>Comprovar entrega</h2><p class="mut">Peça ao cliente o código de 4 dígitos que ele recebeu no link.</p>
+ <div class="code"><input maxlength="1" value="7"><input maxlength="1" value="3"><input maxlength="1" value="1"><input maxlength="1"></div>
+ <button class="btn" onclick="this.textContent='✓ Entrega confirmada · +R$ 8,00';this.style.background='var(--ok)';stp=0;renderRun()">Confirmar código</button>
+ <div class="card" style="margin-top:14px"><b>Cliente sem o código?</b><p class="mut">Ligue para o comércio. Ele confirma a entrega pelo app e o caso fica registrado para o suporte.</p><button class="btn sec">📞 Ligar para o comércio</button></div>
+ <div class="card"><b>Cliente ausente</b><p class="mut">Aguarde 10 min. Depois disso o retorno ao comércio paga +50%.</p><button class="btn ghost">Iniciar espera (10:00)</button></div></div>`;
+
+$('m-wallet').innerHTML=SB+`<div class="body"><h2>Carteira</h2>
+ <div class="hero"><p class="mut">Disponível para saque</p><div class="big">${brl(96.5)}</div><p class="sm">Chave Pix: CPF ***.482.***-10</p>
+ <button class="btn acc" onclick="this.textContent='Pix solicitado ✓ cai hoje até 23h'">Sacar via Pix (grátis)</button></div>
+ <div class="card"><h3>Semana</h3><div class="row sp"><span class="mut">Entregas</span><b>58</b></div><div class="row sp"><span class="mut">Fretes</span><b>${brl(464)}</b></div><div class="row sp"><span class="mut">Gorjetas</span><b>${brl(12)}</b></div></div>
+ <div class="card"><h3>Extrato</h3>
+ <div class="li"><div><b>Burger da 106</b><p class="sm">19:20 · 4,2 km</p></div><span style="color:var(--ok)">+${brl(8)}</span></div>
+ <div class="li"><div><b>Farmácia Vida</b><p class="sm">18:55 · 2,1 km</p></div><span style="color:var(--ok)">+${brl(8)}</span></div>
+ <div class="li"><div><b>Saque Pix</b><p class="sm">Ontem 23:10</p></div><span>−${brl(121)}</span></div></div></div>`+MN('Carteira');
+
+$('m-bonus').innerHTML=SB+`<div class="body"><h2>Nota e regras</h2>
+ <div class="card"><b>Sua nota</b><p class="big">4,9 ★</p><p class="sm">Média das últimas 30 avaliações · recusar corrida nunca bloqueia</p></div>
+ <div class="card"><div class="row sp"><b>Prioridade</b><span class="badge b-ok">Nota ≥ 4,0</span></div><p class="mut">Quem tem nota alta e é preferido dos comércios recebe as ofertas primeiro.</p></div>
+ <div class="card"><div class="row sp"><b>Chuva ou após 23h</b><span class="badge b-info">+R$ 3/entrega</span></div><p class="mut">Pago pelo comércio, 100% para você.</p></div>
+ <div class="card"><div class="row sp"><b>Corrida sem aceite</b><span class="badge b-info">+R$ 1</span></div><p class="mut">Após 5 min sem ninguém aceitar, o frete sobe R$ 1.</p></div>
+ <div class="card"><b>Tabela de frete</b><p class="mut">R$ 8 até 5 km + R$ 1,50 por km a mais · Pix no mesmo dia</p></div></div>`+MN('Regras');
+
+/* ---------- COMÉRCIO ---------- */
+$('c-login').innerHTML=SB+`<div class="body" style="display:flex;flex-direction:column;justify-content:center">
+ <div class="logo" style="font-size:34px;text-align:center">corre<span>.</span> <span style="font-size:14px;color:var(--ink2)">para comércios</span></div>
+ <p class="mut" style="text-align:center;margin:6px 0 20px">Motoboy na porta em minutos. Sem mensalidade obrigatória e sem % sobre o pedido.</p>
+ <div class="field"><label>E-mail ou celular</label><input value="contato@burgerda106.com.br"></div>
+ <div class="field"><label>Senha</label><input type="password" value="12345678"></div>
+ <button class="btn" onclick="jump('c-home')">Entrar</button>
+ <button class="btn ghost">Cadastrar meu comércio (CNPJ)</button>
+ <p class="sm" style="text-align:center;margin-top:10px">Funciona no navegador, sem instalar nada.</p></div>`;
+
+$('c-home').innerHTML=SB+`<div class="body">
+ <div class="row sp" style="margin-bottom:10px"><div><p class="sm">Burger da 106</p><h2>Boa noite!</h2></div><span class="badge b-ok">7 motoboys perto</span></div>
+ <button class="btn acc" style="font-size:17px;padding:18px" onclick="jump('c-new')">🛵 Pedir entregador</button>
+ <div class="row" style="margin-top:10px"><div class="card" style="flex:1"><p class="sm">Saldo</p><b>${brl(132.4)}</b></div><div class="card" style="flex:1"><p class="sm">Hoje</p><b>14 entregas</b></div></div>
+ <h3>Em andamento</h3>
+ <div class="card" onclick="jump('c-track')" style="cursor:pointer"><div class="row sp"><b>#PL-4821 · Mariana</b><span class="badge b-warn">A caminho</span></div><p class="mut">Diego · chega em ~6 min</p></div>
+ <div class="card"><div class="row sp"><b>#PL-4823 · João</b><span class="badge b-info">Procurando</span></div><p class="mut">Oferecido a 2 motoboys · 0:40</p></div>
+ <div class="card"><h3>Seus preferidos</h3><p class="mut">Diego ★4,9 · Rafa ★4,8 · Lucas ★4,7</p></div></div>`+CN('Início');
+
+$('c-new').innerHTML=SB+`<div class="body"><h2>Nova entrega</h2>
+ <div class="field"><label>Retirada</label><input value="Burger da 106 (endereço salvo)"></div>
+ <div class="field"><label>Endereço do cliente</label><input id="end" value="Qd. 208 Sul, Al. 12, lote 7"></div>
+ <div class="row"><div class="field" style="flex:1"><label>Nome</label><input value="Mariana"></div><div class="field" style="flex:1"><label>WhatsApp</label><input value="(63) 9 8888-1234"></div></div>
+  <div><span class="chip on">1 sacola</span><span class="chip">Bebida</span><span class="chip">Frágil</span><span class="chip">Bag térmica</span></div>
+ <div class="card" style="background:var(--pri-l);box-shadow:none">
+ <div class="row sp"><span class="mut">Distância estimada</span><b>4,2 km</b></div>
+ <div class="row sp"><span class="mut">Frete do motoboy (até 5 km)</span><b>${brl(8)}</b></div>
+ <div class="row sp"><span class="mut">Taxa da plataforma</span><b>${brl(1.5)}</b></div>
+ <div class="row sp" style="border-top:1px solid #c6e6dc;margin-top:6px;padding-top:6px"><b>Total</b><b style="color:var(--pri-d)">${brl(9.5)}</b></div>
+ <p class="sm">Reservado do seu saldo. Volta se ninguém aceitar em 10 min.</p></div>
+ <p class="sm">O motoboy só entrega: o cliente já paga o pedido direto a você.</p>
+ <button class="btn" onclick="jump('c-track')">Chamar motoboy</button></div>`;
+
+let tk=0;
+function renderTrack(){const P=['left:40px;top:62px','left:90px;top:66px','left:150px;top:80px','left:210px;top:105px'];
+ $('c-track').innerHTML=SB+`<div class="body">${mapa(P[tk%4])}
+ <div class="card"><div class="row sp"><b>Diego · Honda CG ··· QRT-4B21</b><span class="badge b-warn">A caminho</span></div>
+ <p class="mut">Chega em ~${6-tk%4} min · ★4,9</p>
+ <ul class="steps"><li class="done">Motoboy aceitou (0:22)</li><li class="done">Coletado 19:31</li><li class="now">A caminho do cliente</li><li>Entregue</li></ul>
+ <div class="row"><button class="btn ghost" style="flex:1">Ligar</button><button class="btn ghost" style="flex:1" onclick="this.textContent='Link copiado ✓'">Copiar link</button></div>
+ <div class="card" style="background:var(--pri-l);box-shadow:none"><p class="sm">Código de entrega do cliente</p><p class="big" style="letter-spacing:6px">7316</p><button class="btn" onclick="this.textContent='WhatsApp aberto com link + código ✓'">Enviar pelo WhatsApp</button></div>
+ <button class="btn dan" style="font-size:12px">Cancelar (R$ 3 ao motoboy se ele já rodou 1 km)</button></div></div>`+CN('Pedir')}
+renderTrack();setInterval(()=>{tk++;const d=$('c-track').querySelector('.moto');const P=['left:40px;top:62px','left:90px;top:66px','left:150px;top:80px','left:210px;top:105px'];if(d)d.setAttribute('style',P[tk%4]);const t=$('t-track').querySelector('.moto');if(t)t.setAttribute('style',P[tk%4])},1500);
+
+$('c-hist').innerHTML=SB+`<div class="body"><h2>Histórico</h2>
+ <div><span class="chip on">Hoje</span><span class="chip">7 dias</span><span class="chip">Mês</span><span class="chip">Exportar CSV</span></div>
+ <div class="card">${[['#PL-4819','Ana · 104 Norte','Entregue',8,'b-ok'],['#PL-4815','Carlos · Taquaralto','Entregue',14,'b-ok'],['#PL-4810','Bia · 307 Sul','Cancelada',3,'b-err'],['#PL-4807','Paulo · 1106 Sul','Devolvida',12,'b-warn'],['#PL-4801','Rita · 405 Norte','Entregue',10,'b-ok']].map(r=>`<div class="li"><div><b>${r[0]}</b><p class="sm">${r[1]}</p></div><div style="text-align:right"><span class="badge ${r[4]}">${r[2]}</span><p class="sm">${brl(r[3])}</p></div></div>`).join('')}</div>
+ <div class="card"><div class="row sp"><span class="mut">Gasto no mês</span><b>${brl(1284)}</b></div><div class="row sp"><span class="mut">Economia vs. 12% de comissão</span><b style="color:var(--ok)">${brl(612)}</b></div></div></div>`+CN('Histórico');
+
+$('c-plan').innerHTML=SB+`<div class="body"><h2>Créditos e plano</h2>
+ <div class="hero"><p class="mut">Saldo disponível</p><div class="big">${brl(132.4)}</div><button class="btn acc" onclick="jump('c-pix')">Recarregar via Pix</button></div>
+ <div class="card" style="border:2px solid var(--line)"><div class="row sp"><b>Avulso</b><span class="badge b-mut">Atual</span></div><p class="mut">Sem mensalidade · ${brl(1.5)} por entrega</p></div>
+ <div class="card" style="border:2px solid var(--pri)"><div class="row sp"><b>Plano Parceiro</b><span class="badge b-mut">Em breve</span></div>
+ <p class="big" style="font-size:22px">${brl(79)}<span class="sm">/mês</span></p><p class="mut">+ ${brl(0.8)} por entrega · prioridade no despacho · relatório mensal · 3 motoboys preferidos</p>
+ <button class="btn ghost" disabled>Disponível depois do piloto</button></div>
+ <p class="sm">Cancele quando quiser. Nota fiscal emitida só sobre a taxa da plataforma.</p></div>`+CN('Plano');
+
+$('c-pix').innerHTML=SB+`<div class="body"><h2>Recarga via Pix</h2>
+ <div><span class="chip">R$ 50</span><span class="chip on">R$ 100</span><span class="chip">R$ 200</span><span class="chip">Outro</span></div>
+ <div class="card" style="text-align:center"><p class="mut">Escaneie no app do seu banco</p><div class="qr"></div>
+ <b>${brl(100)}</b><p class="sm">Expira em 29:41 · Recebedor: Corre Entregas</p>
+ <button class="btn sec" onclick="this.textContent='Código copiado ✓'">Copiar Pix Copia e Cola</button></div>
+ <div class="card row sp"><span class="mut">Status</span><span class="badge b-warn" id="pixst">Aguardando pagamento</span></div>
+ <button class="btn" onclick="const b=$('pixst');b.className='badge b-ok';b.textContent='Pago · saldo ${brl(232.4)}'">Simular pagamento</button></div>`;
+
+$('c-cup').innerHTML=SB+`<div class="body"><h2>Cupons</h2>
+ <div class="field"><label>Tenho um código</label><div class="row"><input value="PALMAS10" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit"><button class="btn" style="width:auto;margin:0;padding:10px 14px">Aplicar</button></div></div>
+ ${[['BEMVINDO','10 primeiras entregas sem taxa da plataforma','Ativo','b-ok'],['INDICA1','Indique um comércio: R$ 20 em créditos','Disponível','b-info'],['CHUVA','Taxa zerada em dias de chuva (pago pela plataforma)','Expirado','b-mut']].map(c=>`<div class="card" style="border-left:5px solid var(--acc)"><div class="row sp"><b>${c[0]}</b><span class="badge ${c[3]}">${c[2]}</span></div><p class="mut">${c[1]}</p></div>`).join('')}
+ <p class="sm">Cupons descontam só a taxa da plataforma; o frete do motoboy nunca é reduzido.</p></div>`+CN('Plano');
+
+/* ---------- CLIENTE ---------- */
+$('t-track').innerHTML=SB+`<div class="body track"><div class="row sp"><div class="logo" style="font-size:20px">corre<span>.</span></div><span class="sm">corre.app/r/x8K2</span></div>
+ <h2 style="margin-top:8px">Seu pedido do Burger da 106 está a caminho</h2><p class="mut" style="margin-bottom:8px">Previsão: 19:48</p>
+ ${mapa('left:90px;top:66px')}
+ <div class="card" style="text-align:center"><p class="mut">Informe este código ao entregador</p><p class="big" style="letter-spacing:10px;color:var(--pri)">7314</p></div>
+ <div class="card"><b>Diego</b> <span class="sm">· moto vermelha · QRT-4B21</span><ul class="steps"><li class="done">Pedido saiu do comércio</li><li class="now">Entregador a caminho</li><li>Entregue</li></ul></div>
+ <button class="btn ghost" onclick="jump('t-done')">Ver tela de entregue</button>
+ <p class="sm" style="text-align:center;margin-top:8px">Dúvidas sobre o pedido? Fale com o Burger da 106.</p></div>`;
+
+$('t-done').innerHTML=SB+`<div class="body track" style="text-align:center"><div style="font-size:64px;margin-top:30px">✅</div><h2>Pedido entregue!</h2><p class="mut">19:46 · código confirmado</p>
+ <div class="card" style="margin-top:16px"><b>Como foi a entrega?</b><p style="font-size:30px;color:var(--acc);margin:8px 0;cursor:pointer">★★★★★</p>
+ <span class="chip on">Rápida</span><span class="chip">Educado</span><span class="chip">Pedido intacto</span>
+ <div class="field" style="margin-top:8px"><label>Gorjeta para o Diego (opcional, via Pix)</label></div><span class="chip">R$ 2</span><span class="chip on">R$ 5</span><span class="chip">R$ 10</span>
+ <button class="btn">Enviar avaliação</button></div>
+ <p class="sm">Este link expira em 24 h. Seus dados são apagados em 30 dias (LGPD).</p></div>`;
+
+/* ---------- ADMIN ---------- */
+const AV={dash:()=>`<div class="row sp" style="margin-bottom:12px"><h2>Agora em Palmas</h2><span class="badge b-err">1 alerta: #PL-4823 há 5 min sem aceite</span></div>
+ <div class="kpis">${[['Entregas hoje','86'],['Em andamento','9'],['Motoboys online','14'],['Tempo médio de aceite','0:48']].map(k=>`<div class="card"><p class="sm">${k[0]}</p><p class="big">${k[1]}</p></div>`).join('')}</div>
+ <div class="grid2"><div class="card"><h3>Entregas ativas</h3><table><tr><th>Pedido</th><th>Comércio</th><th>Motoboy</th><th>Status</th><th>Tempo</th><th></th></tr>
+ ${[['#PL-4823','Burger da 106','—','Procurando','b-err','5:12'],['#PL-4821','Burger da 106','Diego','A caminho','b-warn','14:30'],['#PL-4820','Açaí do Lago','Rafa','No comércio','b-info','6:05'],['#PL-4818','Farmácia Vida','Lucas','Coletada','b-warn','9:44'],['#PL-4816','Pizzaria Sol','Ítalo','Cliente ausente','b-err','12:01']].map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td><span class="badge ${r[4]}">${r[3]}</span></td><td>${r[5]}</td><td><a style="color:var(--pri);cursor:pointer">${r[2]==='—'?'+R$ 1 / Reatribuir':'Ver'}</a></td></tr>`).join('')}</table></div>
+ <div class="card"><h3>Mapa</h3>${mapa('left:120px;top:60px')}<p class="sm">🟠 14 online · 🏪 22 comércios ativos</p></div></div>`,
+ motos:()=>`<h2 style="margin-bottom:12px">Motoboys online</h2><div class="card"><table><tr><th>Nome</th><th>Status</th><th>Região</th><th>Hoje</th><th>Nota</th><th>Aceite</th></tr>
+ ${[['Diego','Em corrida','b-warn','Plano Diretor Sul',11,'4,9','82%'],['Rafa','Livre','b-ok','Centro',8,'4,8','90%'],['Lucas','Em corrida','b-warn','Norte',9,'4,7','76%'],['Ítalo','Livre','b-ok','Taquaralto',5,'4,6','70%'],['Bruno','Pausa','b-mut','Aureny',3,'4,9','88%']].map(r=>`<tr><td><b>${r[0]}</b></td><td><span class="badge ${r[2]}">${r[1]}</span></td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td></tr>`).join('')}</table></div>`,
+ aprov:()=>`<h2 style="margin-bottom:12px">Aprovações de cadastro</h2><div class="card"><table><tr><th>Nome</th><th>Tipo</th><th>Documentos</th><th>Verificação</th><th>Ação</th></tr>
+ ${[['Wesley A.','Motoboy','CNH · CRLV · selfie · antecedentes','CNH 4 anos · 26 anos'],['Kaique M.','Motoboy','CNH · CRLV · selfie','Falta antecedentes'],['Açaí do Lago','Comércio','CNPJ ativo (BrasilAPI)','Endereço confere']].map((r,i)=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><span id="ap${i}"><a style="color:var(--ok);cursor:pointer;font-weight:700" onclick="$('ap${i}').innerHTML='<span class=&quot;badge b-ok&quot;>Aprovado</span>'">Aprovar</a> · <a style="color:var(--err);cursor:pointer" onclick="$('ap${i}').innerHTML='<span class=&quot;badge b-err&quot;>Recusado</span>'">Recusar</a></span></td></tr>`).join('')}</table></div>`,
+ rep:()=>`<h2 style="margin-bottom:12px">Repasses Pix (D+0)</h2><div class="card"><p class="mut">No piloto o repasse é manual: exporte o CSV e faça os Pix pelo banco.</p><table style="margin-top:8px"><tr><th>Motoboy</th><th>Entregas</th><th>Valor</th><th>Status</th></tr>${[['Diego',11,96.5,'Pendente','b-warn'],['Rafa',8,71,'Pago','b-ok'],['Lucas',9,82,'Pendente','b-warn']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${brl(r[2])}</td><td><span class="badge ${r[4]}">${r[3]}</span></td></tr>`).join('')}</table><button class="btn" style="width:auto;padding:10px 18px">Exportar CSV</button></div>`};
+function renderAdm(k){$('adm').innerHTML=`<div class="side"><div class="logo">corre<span>.</span></div>${[['dash','Entregas ativas'],['motos','Motoboys online'],['aprov','Aprovações (3)'],['rep','Repasses Pix']].map(([id,t])=>`<a class="${id===k?'on':''}" onclick="renderAdm('${id}')">${t}</a>`).join('')}<p class="sm" style="margin-top:20px;color:#7d8b98">Suporte: Thiago<br>Admin: Marcos</p></div><div class="main">${AV[k]()}</div>`}
+renderAdm('dash');
+
+/* tabs */
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.stage').forEach(s=>s.classList.toggle('hide',s.dataset.group!==b.dataset.g));if(b.dataset.g==='moto')startOffer()});
+startOffer();
+</script>
+</body>
+</html>

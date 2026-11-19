@@ -1,0 +1,26 @@
+# Estudos de negócio (ficam só no site privado)
+docs/0*.md
+docs/html/
+docs/PROGRESS.md
+docs/*.xlsx
+scripts/gerar_planilha.py
+scripts/gerar_html_docs.py
+/index.html
+site/
+.vercel/
+
+# Segredos
+*.jks
+*.keystore
+key.properties
+.env*
+
+# Flutter/Dart
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+pubspec_overrides.yaml
+entregas/
