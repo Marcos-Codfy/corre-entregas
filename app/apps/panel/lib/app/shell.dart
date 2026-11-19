@@ -21,22 +21,19 @@ class PanelShell extends ConsumerStatefulWidget {
 class _PanelShellState extends ConsumerState<PanelShell> {
   bool _trafficOn = false;
 
-  @override
-  void initState() {
-    super.initState();
-    // Suporte e admin veem movimento de fundo: outros comércios pedindo.
+  /// Suporte e admin veem movimento de fundo: outros comércios pedindo.
+  void _ensureTraffic(DemoRole role) {
+    if (_trafficOn || !role.isBackOffice) return;
+    _trafficOn = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final role = ref.read(sessionProvider);
-      if (!_trafficOn && role != null && role.isBackOffice) {
-        _trafficOn = true;
-        ref.read(simulatorProvider).startBackgroundTraffic(exceptMerchants: {ref.read(myMerchantIdProvider)});
-      }
+      ref.read(simulatorProvider).startBackgroundTraffic(exceptMerchants: {ref.read(myMerchantIdProvider)});
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final role = ref.watch(sessionProvider) ?? DemoRole.merchantOwner;
+    _ensureTraffic(role);
     final items = navFor(role);
     final idx = items.indexWhere((n) => n.path == widget.location);
     final merchant = ref.watch(myMerchantProvider);
