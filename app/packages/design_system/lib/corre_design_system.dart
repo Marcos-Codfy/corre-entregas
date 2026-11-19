@@ -8,6 +8,7 @@ export 'src/components/corre_domain.dart';
 export 'src/components/corre_feedback.dart';
 export 'src/components/corre_inputs.dart';
 export 'src/components/corre_layout.dart';
+export 'src/components/corre_map.dart';
 export 'src/components/corre_selection.dart';
 export 'src/theme/corre_theme.dart';
 export 'src/tokens/corre_colors.dart';
