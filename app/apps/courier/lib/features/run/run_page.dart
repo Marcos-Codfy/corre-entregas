@@ -125,7 +125,7 @@ class RunPage extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Flexible(child: CorreBadge(label: d.status.label, tone: d.status.tone)),
+                      Flexible(child: CorreBadge(label: d.status.shortLabel, tone: d.status.tone)),
                       const SizedBox(width: CorreSpace.sm),
                       const Spacer(),
                       if (target != null)
