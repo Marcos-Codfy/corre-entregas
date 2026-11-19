@@ -85,7 +85,9 @@ abstract final class Seed {
         final km = Geo.roadKm(m.address.point, drop.point);
         final rain = r.nextDouble() < .08;
         final q = pricing.quote(km, rainOrLateNight: rain);
-        final created = DateTime(now.year, now.month, now.day - day, 11 + r.nextInt(12), r.nextInt(60));
+        // 60% no pico da noite (18h–22h), como lanchonetes e pizzarias.
+        final hour = r.nextDouble() < .6 ? 18 + r.nextInt(5) : 11 + r.nextInt(7);
+        final created = DateTime(now.year, now.month, now.day - day, hour, r.nextInt(60));
         final roll = r.nextDouble();
         final status = roll < .88
             ? DeliveryStatus.delivered
