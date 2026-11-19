@@ -75,7 +75,7 @@ app/
 - [x] B10. Prova de entrega por código de 4 dígitos; cliente sem código (ligar ao comércio); cliente ausente (espera 10 min, retorno +50%).
 - [x] B11. Carteira (saldo, extrato, saque Pix simulado), histórico de corridas, nota e regras, perfil (moto: só modelo), ajuda/suporte, termos.
 - [x] B12. Estados de erro, sem GPS, sem internet (fila offline simulada), permissões.
-- [ ] B13. Ícone, splash nativa, nome do app, keystore, `flutter build apk --release`; testar no emulador; copiar APK para `entregas/`.
+- [x] B13. Ícone, splash nativa, nome do app, keystore, `flutter build apk --release`; testar no emulador; copiar APK para `entregas/`.
 
 ## Parte C — Painel web (comércio + suporte/admin)
 - [x] C1. App panel: shell responsivo, rotas por papel (merchant_owner, merchant_staff, support, admin), modo demonstração com troca de perfil.
@@ -88,8 +88,8 @@ app/
 - [x] C8. `flutter build web --release`, deploy no Cloudflare Pages, conferir no navegador; atualizar site do estudo com links.
 
 ## Entrega final da Onda 1
-- [ ] F1. APK em `entregas/app-motoboy.apk` + link do painel + link do design system.
-- [ ] F2. Atualizar documentação (site), PROGRESS.md e nota no Obsidian.
+- [x] F1. APK em `entregas/app-motoboy.apk` + link do painel + link do design system.
+- [x] F2. Atualizar documentação (site), PROGRESS.md e nota no Obsidian.
 
 ## Diário
 - 2026-11-19: plano criado. Aguardando "comece".
@@ -98,3 +98,4 @@ app/
 - 2026-11-19: B1–B4 feitos (core: domínio, repositórios em memória, DeliveryService, Simulator, DemoEnvironment, 50 testes). Próximo: B5 app courier.
 - 2026-11-19: B5–B12 feitos (app courier completo, 6 testes). Pacote novo packages/shared (providers, apresentação, links). B13 em andamento: keystore em C:/Users/Marcos/.corre-keys (senha em android/key.properties, fora do git). Sem AVD na máquina: conferir visual pela versão web do courier.
 - 2026-11-19: Parte C concluída (painel: 12 testes). Deploys: painel https://corre-painel.vinicius-codfy.workers.dev , motoboy web https://corre-motoboy.vinicius-codfy.workers.dev , DS https://corre-design-system.vinicius-codfy.workers.dev . Admin pode editar preços (core). Próximo: B13 APK final (split arm64 + universal em entregas/), F1 README com prints, F2 docs/site/Obsidian, push.
+- 2026-11-19: Onda 1 concluída. APKs em entregas/, README com prints, Obsidian atualizado, push feito. Pendente só republicar o site do estudo na Vercel (aguarda validação).
