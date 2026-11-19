@@ -61,6 +61,13 @@ class _CorreMapViewState extends State<CorreMapView> {
   @override
   void didUpdateWidget(covariant CorreMapView old) {
     super.didUpdateWidget(old);
+    // Reenquadra quando os marcadores mudam (ex.: endereço escolhido na nova entrega).
+    final pts = [for (final p in widget.pins) p.point];
+    final oldPts = [for (final p in old.pins) p.point];
+    final changed = pts.length != oldPts.length || [for (var i = 0; i < pts.length; i++) pts[i] != oldPts[i]].any((x) => x);
+    if (_ready && widget.fitToPins && widget.followPoint == null && pts.length >= 2 && changed) {
+      _controller.fitCamera(CameraFit.bounds(bounds: LatLngBounds.fromPoints(pts), padding: const EdgeInsets.all(36), maxZoom: 16));
+    }
     final f = widget.followPoint;
     if (_ready && f != null && f != old.followPoint) {
       _controller.move(f, _controller.camera.zoom);

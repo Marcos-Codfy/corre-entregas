@@ -170,7 +170,14 @@ class CorreKeyValue extends StatelessWidget {
           Expanded(
             child: Text(label, style: emphasize ? style : style?.copyWith(color: context.palette.ink2)),
           ),
-          Text(value, style: (emphasize ? style : context.text.titleSmall)?.copyWith(color: valueColor)),
+          const SizedBox(width: CorreSpace.sm),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: (emphasize ? style : context.text.titleSmall)?.copyWith(color: valueColor),
+            ),
+          ),
         ],
       ),
     );

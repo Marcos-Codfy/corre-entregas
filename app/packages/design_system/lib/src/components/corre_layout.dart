@@ -82,7 +82,7 @@ class CorreWebShell extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(CorreSpace.lg),
-              child: expanded ? CorreLogo(size: 26, subtitle: sectionLabel) : const Center(child: CorreLogo(size: 18)),
+              child: expanded ? CorreLogo(size: 26, subtitle: sectionLabel) : const Center(child: FittedBox(fit: BoxFit.scaleDown, child: CorreLogo(size: 18))),
             ),
             for (var i = 0; i < items.length; i++)
               Padding(
@@ -173,6 +173,23 @@ class CorrePage extends StatelessWidget {
       child: ListView(padding: padding ?? const EdgeInsets.all(CorreSpace.lg), children: children),
     ),
   );
+}
+
+/// Lista rolável com largura máxima confortável de leitura, centralizada em tablets.
+class CorreReadableList extends StatelessWidget {
+  const CorreReadableList({super.key, required this.children, this.padding, this.maxWidth = 680});
+  final List<Widget> children;
+  final EdgeInsetsGeometry? padding;
+  final double maxWidth;
+
+  @override
+  Widget build(BuildContext context) => Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: ListView(padding: padding, children: children),
+        ),
+      );
 }
 
 /// Grade responsiva: 1 coluna no celular, [tabletColumns]/[desktopColumns] nas maiores.
