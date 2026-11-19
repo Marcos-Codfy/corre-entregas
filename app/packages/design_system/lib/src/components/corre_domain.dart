@@ -23,7 +23,7 @@ class CorreLogo extends StatelessWidget {
       Text('.', style: TextStyle(fontSize: size, fontWeight: FontWeight.w800, color: p.accent)),
       if (subtitle != null) ...[
         const SizedBox(width: CorreSpace.sm),
-        Text(subtitle!, style: context.text.bodyMedium),
+        Flexible(child: Text(subtitle!, style: context.text.bodyMedium, overflow: TextOverflow.ellipsis)),
       ],
     ]);
   }
