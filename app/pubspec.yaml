@@ -5,6 +5,7 @@ environment:
 workspace:
   - packages/core
   - packages/design_system
+  - packages/shared
   - apps/ds_sample
   - apps/courier
   - apps/panel

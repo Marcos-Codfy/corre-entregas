@@ -1,0 +1,21 @@
+name: corre_shared
+description: Ponte entre o domínio e a interface (providers do Riverpod, apresentação de status, conversões de mapa).
+version: 0.1.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.30.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  corre_core: any
+  corre_design_system: any
+  flutter_riverpod: ^3.5.0
+  latlong2: ^0.10.1
+  shared_preferences: ^2.5.3
+  url_launcher: ^6.3.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
