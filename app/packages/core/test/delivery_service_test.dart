@@ -240,4 +240,33 @@ void main() {
     expect(env.events.all().first.type, 'delivery.created');
     expect(env.events.all().any((e) => e.type == 'pricing.updated'), isTrue);
   });
+
+  group('clientes frequentes', () {
+    test('repetir sem confirmar o endereço é bloqueado e não cria entrega', () async {
+      final saved = env.savedCustomers.list(merchantId).first;
+      await expectLater(s.repeatFor(saved, addressConfirmed: false), throwsA(isA<BusinessError>()));
+      expect(env.deliveries.all(), isEmpty);
+    });
+
+    test('repetir confirmado usa o mesmo endereço e soma o uso', () async {
+      final saved = env.savedCustomers.list(merchantId).first;
+      final d = await s.repeatFor(saved, addressConfirmed: true);
+      expect(d.dropoff.line, saved.address.line);
+      expect(env.savedCustomers.list(merchantId).first.timesUsed, saved.timesUsed + 1);
+    });
+
+    test('mesmo telefone atualiza o endereço em vez de duplicar', () async {
+      final before = env.savedCustomers.list(merchantId).length;
+      await s.create(merchantId: merchantId, customer: customer, dropoff: Seed.places[9], rememberCustomer: true);
+      final list = env.savedCustomers.list(merchantId);
+      expect(list, hasLength(before));
+      expect(list.firstWhere((c) => c.customer.phone == customer.phone).address.line, Seed.places[9].line);
+    });
+
+    test('apagar remove da lista do comércio', () async {
+      final saved = env.savedCustomers.list(merchantId).last;
+      await env.savedCustomers.delete(saved.id);
+      expect(env.savedCustomers.list(merchantId).map((c) => c.id), isNot(contains(saved.id)));
+    });
+  });
 }

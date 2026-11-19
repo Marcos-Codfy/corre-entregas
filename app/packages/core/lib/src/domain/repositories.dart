@@ -47,6 +47,13 @@ abstract interface class IncidentRepository {
   Future<void> save(Incident incident);
 }
 
+abstract interface class SavedCustomerRepository {
+  Stream<List<SavedCustomer>> watch(String merchantId);
+  List<SavedCustomer> list(String merchantId);
+  Future<void> save(SavedCustomer customer);
+  Future<void> delete(String id);
+}
+
 abstract interface class EventLog {
   Stream<List<DomainEvent>> watchAll();
   List<DomainEvent> all();

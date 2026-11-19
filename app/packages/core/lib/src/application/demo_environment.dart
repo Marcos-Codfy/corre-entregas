@@ -22,6 +22,7 @@ class DemoEnvironment {
   WalletRepository get wallet => service.wallet;
   EventLog get events => service.events;
   IncidentRepository get incidents => service.incidents;
+  SavedCustomerRepository get savedCustomers => service.savedCustomers;
 
   static Future<DemoEnvironment> seeded({Clock clock = const SystemClock(), int seed = 7, double timeScale = 6, bool withHistory = true}) async {
     final service = DeliveryService(
@@ -42,6 +43,9 @@ class DemoEnvironment {
     }
     for (final c in Seed.couriers) {
       await service.couriers.save(c.copyWith(idleSince: now.subtract(Duration(minutes: c.id.length))));
+    }
+    for (final c in Seed.savedCustomers(now)) {
+      await service.savedCustomers.save(c);
     }
     for (final c in Seed.coupons(now)) {
       await coupons.save(c);

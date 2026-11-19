@@ -402,3 +402,33 @@ class DomainEvent {
   final GeoPoint? position;
   final Map<String, Object?> data;
 }
+
+/// Cliente salvo pelo comércio para repetir pedidos (dado do comércio, que ele pode apagar).
+@immutable
+class SavedCustomer {
+  const SavedCustomer({
+    required this.id,
+    required this.merchantId,
+    required this.customer,
+    required this.address,
+    required this.lastUsed,
+    this.timesUsed = 1,
+    this.notes = '',
+  });
+
+  final String id, merchantId, notes;
+  final Customer customer;
+  final Address address;
+  final DateTime lastUsed;
+  final int timesUsed;
+
+  SavedCustomer used(DateTime at, {Address? address, String? notes}) => SavedCustomer(
+        id: id,
+        merchantId: merchantId,
+        customer: customer,
+        address: address ?? this.address,
+        lastUsed: at,
+        timesUsed: timesUsed + 1,
+        notes: notes ?? this.notes,
+      );
+}

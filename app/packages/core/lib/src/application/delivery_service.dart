@@ -5,6 +5,7 @@ import '../domain/dispatch.dart';
 import '../domain/entities.dart';
 import '../domain/geo.dart';
 import '../domain/pricing.dart';
+import '../data/in_memory.dart';
 import '../domain/repositories.dart';
 
 /// Erro de regra de negócio com mensagem pronta para a tela.
@@ -24,12 +25,14 @@ class DeliveryService {
     required this.wallet,
     required this.events,
     required this.incidents,
+    SavedCustomerRepository? savedCustomers,
     this.clock = const SystemClock(),
     PricingService pricing = const PricingService(),
     this.planner = const DispatchPlanner(),
     math.Random? random,
   })  : // ignore: prefer_initializing_formals
         _pricing = pricing,
+        savedCustomers = savedCustomers ?? InMemorySavedCustomerRepository(),
         _random = random ?? math.Random();
 
   final DeliveryRepository deliveries;
@@ -38,6 +41,7 @@ class DeliveryService {
   final WalletRepository wallet;
   final EventLog events;
   final IncidentRepository incidents;
+  final SavedCustomerRepository savedCustomers;
   final Clock clock;
   PricingService _pricing;
   PricingService get pricing => _pricing;
@@ -83,6 +87,7 @@ class DeliveryService {
     bool rainOrLateNight = false,
     Cents? orderValue,
     bool waiveFee = false,
+    bool rememberCustomer = false,
   }) async {
     final merchant = merchants.byId(merchantId) ?? (throw BusinessError('Comércio não encontrado'));
     if (merchant.approval != ApprovalStatus.approved) throw BusinessError('Cadastro do comércio ainda em análise');
@@ -116,6 +121,7 @@ class DeliveryService {
     await merchants.save(merchant.copyWith(balance: merchant.balance - quote.merchantTotal));
     await wallet.add(WalletEntry(id: _id('w'), ownerId: merchantId, amount: -quote.merchantTotal, description: 'Entrega ${d.code} (reserva)', at: now, kind: WalletEntryKind.fee));
     await deliveries.save(d);
+    if (rememberCustomer) await _remember(merchantId, customer, dropoff, notes, now);
     _log('delivery.created', actor: merchantId, d: d, at: dropoff.point, data: {
       'distanceKm': quote.distanceKm,
       'freight': quote.freight,
@@ -124,6 +130,28 @@ class DeliveryService {
       'district': dropoff.district,
     });
     return d;
+  }
+
+  /// Guarda ou atualiza o cliente frequente (mesmo telefone = mesmo cliente).
+  Future<void> _remember(String merchantId, Customer c, Address a, String notes, DateTime at) async {
+    final existing = savedCustomers.list(merchantId).where((s) => s.customer.phone == c.phone).firstOrNull;
+    await savedCustomers.save(existing == null
+        ? SavedCustomer(id: _id('cli'), merchantId: merchantId, customer: c, address: a, lastUsed: at, notes: notes)
+        : existing.used(at, address: a, notes: notes));
+  }
+
+  /// Pedido repetido: só depois que o comércio confirmou que o endereço é o mesmo.
+  Future<Delivery> repeatFor(SavedCustomer saved, {required bool addressConfirmed, List<String> tags = const [], bool waiveFee = false}) async {
+    if (!addressConfirmed) throw BusinessError('Confirme o endereço com o cliente antes de repetir o pedido');
+    return create(
+      merchantId: saved.merchantId,
+      customer: saved.customer,
+      dropoff: saved.address,
+      notes: saved.notes,
+      tags: tags,
+      waiveFee: waiveFee,
+      rememberCustomer: true,
+    );
   }
 
   Delivery _get(String id) => deliveries.byId(id) ?? (throw BusinessError('Entrega não encontrada'));

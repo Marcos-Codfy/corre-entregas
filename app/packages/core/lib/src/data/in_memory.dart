@@ -14,6 +14,11 @@ class _Table<T> {
   List<T> all() => List.of(_rows.values);
   T? byId(String id) => _rows[id];
 
+  void remove(String id) {
+    _rows.remove(id);
+    _changes.add(null);
+  }
+
   void put(T row) {
     _rows[_idOf(row)] = row;
     _changes.add(null);
@@ -126,4 +131,22 @@ class InMemoryEventLog implements EventLog {
         final sub = _changes.stream.listen((_) => c.add(all()));
         c.onCancel = sub.cancel;
       });
+}
+
+class InMemorySavedCustomerRepository implements SavedCustomerRepository {
+  final _t = _Table<SavedCustomer>((c) => c.id);
+
+  /// Mais usados primeiro; empate pelo uso mais recente.
+  @override
+  List<SavedCustomer> list(String merchantId) => _t.all().where((c) => c.merchantId == merchantId).toList()
+    ..sort((a, b) {
+      final t = b.timesUsed.compareTo(a.timesUsed);
+      return t != 0 ? t : b.lastUsed.compareTo(a.lastUsed);
+    });
+  @override
+  Future<void> save(SavedCustomer customer) async => _t.put(customer);
+  @override
+  Future<void> delete(String id) async => _t.remove(id);
+  @override
+  Stream<List<SavedCustomer>> watch(String merchantId) => _t.watch(() => list(merchantId));
 }

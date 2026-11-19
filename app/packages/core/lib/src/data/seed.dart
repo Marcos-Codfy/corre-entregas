@@ -133,6 +133,12 @@ abstract final class Seed {
     return list;
   }
 
+  static List<SavedCustomer> savedCustomers(DateTime now) => [
+        SavedCustomer(id: 'cli-1', merchantId: demoMerchantId, customer: const Customer(name: 'Mariana Silva', phone: '63988881234'), address: places[2], lastUsed: now.subtract(const Duration(days: 1)), timesUsed: 9, notes: 'Portão azul'),
+        SavedCustomer(id: 'cli-2', merchantId: demoMerchantId, customer: const Customer(name: 'Carlos Eduardo', phone: '63991234567'), address: places[3], lastUsed: now.subtract(const Duration(days: 2)), timesUsed: 5),
+        SavedCustomer(id: 'cli-3', merchantId: demoMerchantId, customer: const Customer(name: 'Júlia Neves', phone: '63984445566'), address: places[6], lastUsed: now.subtract(const Duration(days: 4)), timesUsed: 3, notes: 'Interfone 12'),
+      ];
+
   static List<Coupon> coupons(DateTime now) => [
         Coupon(code: 'BEMVINDO10', kind: CouponKind.feeWaiver, value: 10, validUntil: now.add(const Duration(days: 60)), maxUses: 50, used: 7),
         Coupon(code: 'VEMDA99', kind: CouponKind.feeWaiver, value: 15, validUntil: now.add(const Duration(days: 30)), maxUses: 30, used: 2),
