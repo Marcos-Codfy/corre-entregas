@@ -18,14 +18,27 @@ class CorreLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
-    return Row(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
-      Text('corre', style: TextStyle(fontSize: size, fontWeight: FontWeight.w800, color: p.brand, letterSpacing: -.5)),
-      Text('.', style: TextStyle(fontSize: size, fontWeight: FontWeight.w800, color: p.accent)),
-      if (subtitle != null) ...[
-        const SizedBox(width: CorreSpace.sm),
-        Flexible(child: Text(subtitle!, style: context.text.bodyMedium, overflow: TextOverflow.ellipsis)),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(
+          'corre',
+          style: TextStyle(fontSize: size, fontWeight: FontWeight.w800, color: p.brand, letterSpacing: -.5),
+        ),
+        Text(
+          '.',
+          style: TextStyle(fontSize: size, fontWeight: FontWeight.w800, color: p.accent),
+        ),
+        if (subtitle != null) ...[
+          const SizedBox(width: CorreSpace.sm),
+          Flexible(
+            child: Text(subtitle!, style: context.text.bodyMedium, overflow: TextOverflow.ellipsis),
+          ),
+        ],
       ],
-    ]);
+    );
   }
 }
 
@@ -75,17 +88,20 @@ class _CorreCountdownRingState extends State<CorreCountdownRing> {
       child: SizedBox(
         width: widget.size,
         height: widget.size,
-        child: Stack(alignment: Alignment.center, children: [
-          SizedBox.expand(
-            child: CircularProgressIndicator(
-              value: frac,
-              strokeWidth: 8,
-              backgroundColor: p.line,
-              color: frac < .3 ? p.error : p.brand,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox.expand(
+              child: CircularProgressIndicator(
+                value: frac,
+                strokeWidth: 8,
+                backgroundColor: p.line,
+                color: frac < .3 ? p.error : p.brand,
+              ),
             ),
-          ),
-          Text('${_left}s', style: context.text.headlineSmall?.copyWith(color: frac < .3 ? p.error : p.brand)),
-        ]),
+            Text('${_left}s', style: context.text.headlineSmall?.copyWith(color: frac < .3 ? p.error : p.brand)),
+          ],
+        ),
       ),
     );
   }
@@ -109,52 +125,68 @@ class CorreStepTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
-    return Column(children: [
-      for (var i = 0; i < steps.length; i++)
-        IntrinsicHeight(
-          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            SizedBox(
-              width: 24,
-              child: Column(children: [
-                Container(
-                  width: 16,
-                  height: 16,
-                  margin: const EdgeInsets.only(top: 2),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: switch (steps[i].state) {
-                      CorreStepState.done => p.brand,
-                      CorreStepState.current => p.accent,
-                      CorreStepState.pending => Colors.transparent,
-                    },
-                    border: Border.all(color: steps[i].state == CorreStepState.pending ? p.line : Colors.transparent, width: 2),
+    return Column(
+      children: [
+        for (var i = 0; i < steps.length; i++)
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  width: 24,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 16,
+                        height: 16,
+                        margin: const EdgeInsets.only(top: 2),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: switch (steps[i].state) {
+                            CorreStepState.done => p.brand,
+                            CorreStepState.current => p.accent,
+                            CorreStepState.pending => Colors.transparent,
+                          },
+                          border: Border.all(
+                            color: steps[i].state == CorreStepState.pending ? p.line : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                        child: steps[i].state == CorreStepState.done
+                            ? const Icon(Icons.check, size: 11, color: Colors.white)
+                            : null,
+                      ),
+                      if (i < steps.length - 1)
+                        Expanded(
+                          child: Container(width: 2, color: steps[i].state == CorreStepState.done ? p.brand : p.line),
+                        ),
+                    ],
                   ),
-                  child: steps[i].state == CorreStepState.done ? const Icon(Icons.check, size: 11, color: Colors.white) : null,
                 ),
-                if (i < steps.length - 1)
-                  Expanded(child: Container(width: 2, color: steps[i].state == CorreStepState.done ? p.brand : p.line)),
-              ]),
-            ),
-            const SizedBox(width: CorreSpace.sm),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: CorreSpace.md),
-                child: Row(children: [
-                  Expanded(
-                    child: Text(
-                      steps[i].label,
-                      style: steps[i].state == CorreStepState.pending
-                          ? context.text.bodyMedium?.copyWith(color: p.ink3)
-                          : context.text.titleSmall,
+                const SizedBox(width: CorreSpace.sm),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: CorreSpace.md),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            steps[i].label,
+                            style: steps[i].state == CorreStepState.pending
+                                ? context.text.bodyMedium?.copyWith(color: p.ink3)
+                                : context.text.titleSmall,
+                          ),
+                        ),
+                        if (steps[i].time != null) Text(steps[i].time!, style: context.text.bodySmall),
+                      ],
                     ),
                   ),
-                  if (steps[i].time != null) Text(steps[i].time!, style: context.text.bodySmall),
-                ]),
-              ),
+                ),
+              ],
             ),
-          ]),
-        ),
-    ]);
+          ),
+      ],
+    );
   }
 }
 
@@ -184,53 +216,63 @@ class _CorreCodeInputState extends State<CorreCodeInput> {
   Widget build(BuildContext context) {
     final p = context.palette;
     final value = _controller.text;
-    return Column(children: [
-      GestureDetector(
-        onTap: () => _focus.requestFocus(),
-        child: Stack(children: [
-          Opacity(
-            opacity: 0,
-            child: SizedBox(
-              height: 64,
-              child: TextField(
-                key: const Key('code-input'),
-                controller: _controller,
-                focusNode: _focus,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(widget.length)],
-                onChanged: (v) {
-                  setState(() {});
-                  if (v.length == widget.length) widget.onCompleted(v);
-                },
-              ),
-            ),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            for (var i = 0; i < widget.length; i++)
-              Container(
-                width: 56,
-                height: 64,
-                margin: const EdgeInsets.symmetric(horizontal: CorreSpace.xs),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: CorreRadius.mdAll,
-                  border: Border.all(
-                    width: 2,
-                    color: widget.errorText != null ? p.error : (i == value.length ? p.brand : p.line),
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () => _focus.requestFocus(),
+          child: Stack(
+            children: [
+              Opacity(
+                opacity: 0,
+                child: SizedBox(
+                  height: 64,
+                  child: TextField(
+                    key: const Key('code-input'),
+                    controller: _controller,
+                    focusNode: _focus,
+                    autofocus: true,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(widget.length),
+                    ],
+                    onChanged: (v) {
+                      setState(() {});
+                      if (v.length == widget.length) widget.onCompleted(v);
+                    },
                   ),
                 ),
-                child: Text(i < value.length ? value[i] : '', style: context.text.headlineMedium),
               ),
-          ]),
-        ]),
-      ),
-      if (widget.errorText != null) ...[
-        const SizedBox(height: CorreSpace.sm),
-        Text(widget.errorText!, style: context.text.bodySmall?.copyWith(color: p.error)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < widget.length; i++)
+                    Container(
+                      width: 56,
+                      height: 64,
+                      margin: const EdgeInsets.symmetric(horizontal: CorreSpace.xs),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: CorreRadius.mdAll,
+                        border: Border.all(
+                          width: 2,
+                          color: widget.errorText != null ? p.error : (i == value.length ? p.brand : p.line),
+                        ),
+                      ),
+                      child: Text(i < value.length ? value[i] : '', style: context.text.headlineMedium),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        if (widget.errorText != null) ...[
+          const SizedBox(height: CorreSpace.sm),
+          Text(widget.errorText!, style: context.text.bodySmall?.copyWith(color: p.error)),
+        ],
       ],
-    ]);
+    );
   }
 }
 
@@ -250,17 +292,20 @@ class CorrePriceSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorreCard(
-        tone: CorreTone.brand,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          for (final l in lines) CorreKeyValue(label: l.label, value: formatBrl(l.value)),
-          const Divider(height: CorreSpace.lg),
-          CorreKeyValue(label: 'Total', value: formatBrl(total), emphasize: true, valueColor: context.palette.brand),
-          if (footnote != null) ...[
-            const SizedBox(height: CorreSpace.xs),
-            Text(footnote!, style: context.text.bodySmall),
-          ],
-        ]),
-      );
+    tone: CorreTone.brand,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final l in lines) CorreKeyValue(label: l.label, value: formatBrl(l.value)),
+        const Divider(height: CorreSpace.lg),
+        CorreKeyValue(label: 'Total', value: formatBrl(total), emphasize: true, valueColor: context.palette.brand),
+        if (footnote != null) ...[
+          const SizedBox(height: CorreSpace.xs),
+          Text(footnote!, style: context.text.bodySmall),
+        ],
+      ],
+    ),
+  );
 }
 
 /// Cartão de resumo de uma entrega (listas e acompanhamento).
@@ -283,22 +328,33 @@ class CorreDeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorreCard(
-        onTap: onTap,
-        child: Row(children: [
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    onTap: onTap,
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text('$code · $title', style: context.text.titleSmall, overflow: TextOverflow.ellipsis),
               const SizedBox(height: 2),
               Text(subtitle, style: context.text.bodySmall, overflow: TextOverflow.ellipsis),
-            ]),
+            ],
           ),
-          const SizedBox(width: CorreSpace.sm),
-          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+        ),
+        const SizedBox(width: CorreSpace.sm),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
             CorreBadge(label: statusLabel, tone: statusTone),
-            if (value != null) ...[const SizedBox(height: CorreSpace.xs), Text(formatBrl(value!), style: context.text.labelMedium)],
-          ]),
-        ]),
-      );
+            if (value != null) ...[
+              const SizedBox(height: CorreSpace.xs),
+              Text(formatBrl(value!), style: context.text.labelMedium),
+            ],
+          ],
+        ),
+      ],
+    ),
+  );
 }
 
 enum CorreMarkerKind { courier, pickup, dropoff }
@@ -329,7 +385,11 @@ class CorreMapMarker extends StatelessWidget {
           border: Border.all(color: Colors.white, width: 3),
           boxShadow: CorreShadow.card,
         ),
-        child: Icon(icon, color: kind == CorreMarkerKind.courier ? const Color(0xFF16202A) : Colors.white, size: size * .5),
+        child: Icon(
+          icon,
+          color: kind == CorreMarkerKind.courier ? const Color(0xFF16202A) : Colors.white,
+          size: size * .5,
+        ),
       ),
     );
   }
@@ -343,12 +403,19 @@ class CorreRating extends StatelessWidget {
   final double size;
 
   @override
-  Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: [
-        for (var i = 1; i <= 5; i++)
-          InkWell(
-            onTap: onChanged == null ? null : () => onChanged!(i),
-            customBorder: const CircleBorder(),
-            child: Icon(i <= value ? Icons.star_rounded : Icons.star_outline_rounded, size: size, color: context.palette.accent),
+  Widget build(BuildContext context) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      for (var i = 1; i <= 5; i++)
+        InkWell(
+          onTap: onChanged == null ? null : () => onChanged!(i),
+          customBorder: const CircleBorder(),
+          child: Icon(
+            i <= value ? Icons.star_rounded : Icons.star_outline_rounded,
+            size: size,
+            color: context.palette.accent,
           ),
-      ]);
+        ),
+    ],
+  );
 }

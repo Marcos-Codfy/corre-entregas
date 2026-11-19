@@ -86,19 +86,19 @@ class CorrePalette extends ThemeExtension<CorrePalette> {
 
   @override
   CorrePalette copyWith({Color? brand, Color? accent}) => CorrePalette(
-        brand: brand ?? this.brand,
-        brandLight: brandLight,
-        accent: accent ?? this.accent,
-        accentLight: accentLight,
-        ink: ink,
-        ink2: ink2,
-        ink3: ink3,
-        line: line,
-        success: success,
-        warning: warning,
-        error: error,
-        info: info,
-      );
+    brand: brand ?? this.brand,
+    brandLight: brandLight,
+    accent: accent ?? this.accent,
+    accentLight: accentLight,
+    ink: ink,
+    ink2: ink2,
+    ink3: ink3,
+    line: line,
+    success: success,
+    warning: warning,
+    error: error,
+    info: info,
+  );
 
   @override
   CorrePalette lerp(ThemeExtension<CorrePalette>? other, double t) {

@@ -16,13 +16,17 @@ abstract final class CorreToast {
     };
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-        content: Row(children: [
-          Icon(icon, color: tone == CorreTone.neutral ? Colors.white : fg),
-          const SizedBox(width: CorreSpace.sm),
-          Expanded(child: Text(message)),
-        ]),
-      ));
+      ..showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(icon, color: tone == CorreTone.neutral ? Colors.white : fg),
+              const SizedBox(width: CorreSpace.sm),
+              Expanded(child: Text(message)),
+            ],
+          ),
+        ),
+      );
   }
 }
 
@@ -42,23 +46,25 @@ Future<bool> showCorreConfirm(
       content: Text(message, style: ctx.text.bodyLarge),
       actionsPadding: const EdgeInsets.fromLTRB(CorreSpace.lg, 0, CorreSpace.lg, CorreSpace.lg),
       actions: [
-        Row(children: [
-          Expanded(
-            child: CorreButton(
-              label: cancelLabel,
-              variant: CorreButtonVariant.ghost,
-              onPressed: () => Navigator.of(ctx).pop(false),
+        Row(
+          children: [
+            Expanded(
+              child: CorreButton(
+                label: cancelLabel,
+                variant: CorreButtonVariant.ghost,
+                onPressed: () => Navigator.of(ctx).pop(false),
+              ),
             ),
-          ),
-          const SizedBox(width: CorreSpace.sm),
-          Expanded(
-            child: CorreButton(
-              label: confirmLabel,
-              variant: destructive ? CorreButtonVariant.danger : CorreButtonVariant.primary,
-              onPressed: () => Navigator.of(ctx).pop(true),
+            const SizedBox(width: CorreSpace.sm),
+            Expanded(
+              child: CorreButton(
+                label: confirmLabel,
+                variant: destructive ? CorreButtonVariant.danger : CorreButtonVariant.primary,
+                onPressed: () => Navigator.of(ctx).pop(true),
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ],
     ),
   );
@@ -72,12 +78,21 @@ Future<T?> showCorreSheet<T>(BuildContext context, {required String title, requi
     isScrollControlled: true,
     builder: (ctx) => SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(CorreSpace.lg, 0, CorreSpace.lg, CorreSpace.lg + MediaQuery.of(ctx).viewInsets.bottom),
-        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(title, style: ctx.text.titleLarge),
-          const SizedBox(height: CorreSpace.md),
-          child,
-        ]),
+        padding: EdgeInsets.fromLTRB(
+          CorreSpace.lg,
+          0,
+          CorreSpace.lg,
+          CorreSpace.lg + MediaQuery.of(ctx).viewInsets.bottom,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: ctx.text.titleLarge),
+            const SizedBox(height: CorreSpace.md),
+            child,
+          ],
+        ),
       ),
     ),
   );
@@ -107,23 +122,26 @@ class CorreEmptyState extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(CorreSpace.xl),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Container(
-            padding: const EdgeInsets.all(CorreSpace.lg),
-            decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
-            child: Icon(icon, size: 32, color: fg),
-          ),
-          const SizedBox(height: CorreSpace.lg),
-          Text(title, style: context.text.titleLarge, textAlign: TextAlign.center),
-          if (message != null) ...[
-            const SizedBox(height: CorreSpace.sm),
-            Text(message!, style: context.text.bodyMedium, textAlign: TextAlign.center),
-          ],
-          if (actionLabel != null) ...[
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(CorreSpace.lg),
+              decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
+              child: Icon(icon, size: 32, color: fg),
+            ),
             const SizedBox(height: CorreSpace.lg),
-            CorreButton(label: actionLabel!, onPressed: onAction, expand: false),
+            Text(title, style: context.text.titleLarge, textAlign: TextAlign.center),
+            if (message != null) ...[
+              const SizedBox(height: CorreSpace.sm),
+              Text(message!, style: context.text.bodyMedium, textAlign: TextAlign.center),
+            ],
+            if (actionLabel != null) ...[
+              const SizedBox(height: CorreSpace.lg),
+              CorreButton(label: actionLabel!, onPressed: onAction, expand: false),
+            ],
           ],
-        ]),
+        ),
       ),
     );
   }
@@ -150,18 +168,25 @@ class _CorreSkeletonState extends State<CorreSkeleton> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) => FadeTransition(
-        opacity: Tween(begin: .45, end: 1.0).animate(_c),
-        child: Container(
-          width: widget.width,
-          height: widget.height,
-          decoration: BoxDecoration(color: context.palette.line, borderRadius: BorderRadius.circular(widget.radius)),
-        ),
-      );
+    opacity: Tween(begin: .45, end: 1.0).animate(_c),
+    child: Container(
+      width: widget.width,
+      height: widget.height,
+      decoration: BoxDecoration(color: context.palette.line, borderRadius: BorderRadius.circular(widget.radius)),
+    ),
+  );
 }
 
 /// Faixa de aviso dentro da tela (ex.: sem internet, documento vencendo).
 class CorreBanner extends StatelessWidget {
-  const CorreBanner({super.key, required this.message, this.tone = CorreTone.info, this.icon, this.actionLabel, this.onAction});
+  const CorreBanner({
+    super.key,
+    required this.message,
+    this.tone = CorreTone.info,
+    this.icon,
+    this.actionLabel,
+    this.onAction,
+  });
   final String message;
   final CorreTone tone;
   final IconData? icon;
@@ -174,12 +199,16 @@ class CorreBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: CorreSpace.md, vertical: CorreSpace.sm),
       decoration: BoxDecoration(color: bg, borderRadius: CorreRadius.mdAll),
-      child: Row(children: [
-        Icon(icon ?? Icons.info_outline, color: fg, size: 20),
-        const SizedBox(width: CorreSpace.sm),
-        Expanded(child: Text(message, style: context.text.bodyMedium?.copyWith(color: context.palette.ink))),
-        if (actionLabel != null) TextButton(onPressed: onAction, child: Text(actionLabel!)),
-      ]),
+      child: Row(
+        children: [
+          Icon(icon ?? Icons.info_outline, color: fg, size: 20),
+          const SizedBox(width: CorreSpace.sm),
+          Expanded(
+            child: Text(message, style: context.text.bodyMedium?.copyWith(color: context.palette.ink)),
+          ),
+          if (actionLabel != null) TextButton(onPressed: onAction, child: Text(actionLabel!)),
+        ],
+      ),
     );
   }
 }

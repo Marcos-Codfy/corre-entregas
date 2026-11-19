@@ -32,10 +32,16 @@ class CorreCard extends StatelessWidget {
       color: bg,
       shape: RoundedRectangleBorder(
         borderRadius: CorreRadius.mdAll,
-        side: BorderSide(color: highlighted ? p.brand : (tone == null ? p.line : Colors.transparent), width: highlighted ? 2 : 1),
+        side: BorderSide(
+          color: highlighted ? p.brand : (tone == null ? p.line : Colors.transparent),
+          width: highlighted ? 2 : 1,
+        ),
       ),
       clipBehavior: Clip.antiAlias,
-      child: InkWell(onTap: onTap, child: Padding(padding: padding, child: child)),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(padding: padding, child: child),
+      ),
     );
   }
 }
@@ -53,10 +59,15 @@ class CorreBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: CorreSpace.sm + 2, vertical: CorreSpace.xs - 1),
       decoration: BoxDecoration(color: bg, borderRadius: CorreRadius.pillAll),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        if (icon != null) ...[Icon(icon, size: 13, color: fg), const SizedBox(width: CorreSpace.xs)],
-        Text(label, style: context.text.labelSmall?.copyWith(color: fg)),
-      ]),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[Icon(icon, size: 13, color: fg), const SizedBox(width: CorreSpace.xs)],
+          Flexible(
+            child: Text(label, style: context.text.labelSmall?.copyWith(color: fg), overflow: TextOverflow.ellipsis, maxLines: 1),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -83,7 +94,10 @@ class CorreAvatar extends StatelessWidget {
       height: size,
       alignment: Alignment.center,
       decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
-      child: Text(initials(name), style: TextStyle(color: fg, fontWeight: FontWeight.w800, fontSize: size * .38)),
+      child: Text(
+        initials(name),
+        style: TextStyle(color: fg, fontWeight: FontWeight.w800, fontSize: size * .38),
+      ),
     );
   }
 }
@@ -98,21 +112,26 @@ class CorreListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: CorreSpace.md),
-          child: Row(children: [
-            if (leading != null) ...[leading!, const SizedBox(width: CorreSpace.md)],
-            Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: CorreSpace.md),
+      child: Row(
+        children: [
+          if (leading != null) ...[leading!, const SizedBox(width: CorreSpace.md)],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(title, style: context.text.titleSmall),
                 if (subtitle != null) Text(subtitle!, style: context.text.bodySmall),
-              ]),
+              ],
             ),
-            ?trailing,
-          ]),
-        ),
-      );
+          ),
+          ?trailing,
+        ],
+      ),
+    ),
+  );
 }
 
 /// Título de seção com ação opcional.
@@ -124,12 +143,14 @@ class CorreSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: CorreSpace.lg, bottom: CorreSpace.sm),
-        child: Row(children: [
-          Expanded(child: Text(title, style: context.text.titleMedium)),
-          if (actionLabel != null) TextButton(onPressed: onAction, child: Text(actionLabel!)),
-        ]),
-      );
+    padding: const EdgeInsets.only(top: CorreSpace.lg, bottom: CorreSpace.sm),
+    child: Row(
+      children: [
+        Expanded(child: Text(title, style: context.text.titleMedium)),
+        if (actionLabel != null) TextButton(onPressed: onAction, child: Text(actionLabel!)),
+      ],
+    ),
+  );
 }
 
 /// Linha "rótulo ........ valor".
@@ -144,17 +165,28 @@ class CorreKeyValue extends StatelessWidget {
     final style = emphasize ? context.text.titleMedium : context.text.bodyMedium;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: CorreSpace.xs),
-      child: Row(children: [
-        Expanded(child: Text(label, style: emphasize ? style : style?.copyWith(color: context.palette.ink2))),
-        Text(value, style: (emphasize ? style : context.text.titleSmall)?.copyWith(color: valueColor)),
-      ]),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(label, style: emphasize ? style : style?.copyWith(color: context.palette.ink2)),
+          ),
+          Text(value, style: (emphasize ? style : context.text.titleSmall)?.copyWith(color: valueColor)),
+        ],
+      ),
     );
   }
 }
 
 /// Indicador numérico para painéis.
 class CorreKpiTile extends StatelessWidget {
-  const CorreKpiTile({super.key, required this.label, required this.value, this.delta, this.positive = true, this.icon});
+  const CorreKpiTile({
+    super.key,
+    required this.label,
+    required this.value,
+    this.delta,
+    this.positive = true,
+    this.icon,
+  });
   final String label, value;
   final String? delta;
   final bool positive;
@@ -164,16 +196,23 @@ class CorreKpiTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = context.palette;
     return CorreCard(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          if (icon != null) ...[Icon(icon, size: 18, color: p.ink3), const SizedBox(width: CorreSpace.xs)],
-          Expanded(child: Text(label, style: context.text.bodySmall, overflow: TextOverflow.ellipsis)),
-        ]),
-        const SizedBox(height: CorreSpace.sm),
-        Text(value, style: context.text.headlineSmall),
-        if (delta != null)
-          Text(delta!, style: context.text.labelMedium?.copyWith(color: positive ? p.success : p.error)),
-      ]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              if (icon != null) ...[Icon(icon, size: 18, color: p.ink3), const SizedBox(width: CorreSpace.xs)],
+              Expanded(
+                child: Text(label, style: context.text.bodySmall, overflow: TextOverflow.ellipsis),
+              ),
+            ],
+          ),
+          const SizedBox(height: CorreSpace.sm),
+          Text(value, style: context.text.headlineSmall),
+          if (delta != null)
+            Text(delta!, style: context.text.labelMedium?.copyWith(color: positive ? p.success : p.error)),
+        ],
+      ),
     );
   }
 }
@@ -185,18 +224,21 @@ class CorreProgressBar extends StatelessWidget {
   final String? label;
 
   @override
-  Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        ClipRRect(
-          borderRadius: CorreRadius.pillAll,
-          child: LinearProgressIndicator(
-            value: value.clamp(0, 1),
-            minHeight: 8,
-            backgroundColor: context.palette.line,
-            color: context.palette.brand,
-          ),
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      ClipRRect(
+        borderRadius: CorreRadius.pillAll,
+        child: LinearProgressIndicator(
+          value: value.clamp(0, 1),
+          minHeight: 8,
+          backgroundColor: context.palette.line,
+          color: context.palette.brand,
         ),
-        if (label != null) ...[const SizedBox(height: CorreSpace.xs), Text(label!, style: context.text.bodySmall)],
-      ]);
+      ),
+      if (label != null) ...[const SizedBox(height: CorreSpace.xs), Text(label!, style: context.text.bodySmall)],
+    ],
+  );
 }
 
 /// Tabela simples para o painel web, com rolagem horizontal em telas estreitas.

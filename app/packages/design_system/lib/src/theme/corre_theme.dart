@@ -10,20 +10,20 @@ enum CorreTone { neutral, brand, accent, success, warning, error, info }
 /// Gera os temas claro e escuro a partir dos tokens.
 abstract final class CorreTheme {
   static ThemeData light({bool useGoogleFonts = true}) => _build(
-        brightness: Brightness.light,
-        palette: CorrePalette.light,
-        background: CorreRawColors.background,
-        surface: CorreRawColors.surface,
-        useGoogleFonts: useGoogleFonts,
-      );
+    brightness: Brightness.light,
+    palette: CorrePalette.light,
+    background: CorreRawColors.background,
+    surface: CorreRawColors.surface,
+    useGoogleFonts: useGoogleFonts,
+  );
 
   static ThemeData dark({bool useGoogleFonts = true}) => _build(
-        brightness: Brightness.dark,
-        palette: CorrePalette.dark,
-        background: CorreRawColors.darkBackground,
-        surface: CorreRawColors.darkSurface,
-        useGoogleFonts: useGoogleFonts,
-      );
+    brightness: Brightness.dark,
+    palette: CorrePalette.dark,
+    background: CorreRawColors.darkBackground,
+    surface: CorreRawColors.darkSurface,
+    useGoogleFonts: useGoogleFonts,
+  );
 
   static ThemeData _build({
     required Brightness brightness,
@@ -81,7 +81,10 @@ abstract final class CorreTheme {
         color: surface,
         elevation: 0,
         margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: CorreRadius.mdAll, side: BorderSide(color: palette.line)),
+        shape: RoundedRectangleBorder(
+          borderRadius: CorreRadius.mdAll,
+          side: BorderSide(color: palette.line),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -120,10 +123,7 @@ abstract final class CorreTheme {
         indicatorColor: palette.brandLight,
         labelTextStyle: WidgetStatePropertyAll(text.labelSmall),
       ),
-      navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: surface,
-        indicatorColor: palette.brandLight,
-      ),
+      navigationRailTheme: NavigationRailThemeData(backgroundColor: surface, indicatorColor: palette.brandLight),
     );
   }
 }

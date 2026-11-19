@@ -29,10 +29,13 @@ class CorreChip extends StatelessWidget {
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: CorreSpace.md, vertical: CorreSpace.sm - 2),
-            child: Row(mainAxisSize: MainAxisSize.min, children: [
-              if (icon != null) ...[Icon(icon, size: 16, color: color), const SizedBox(width: CorreSpace.xs)],
-              Text(label, style: context.text.labelMedium?.copyWith(color: color)),
-            ]),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (icon != null) ...[Icon(icon, size: 16, color: color), const SizedBox(width: CorreSpace.xs)],
+                Text(label, style: context.text.labelMedium?.copyWith(color: color)),
+              ],
+            ),
           ),
         ),
       ),
@@ -50,12 +53,12 @@ class CorreSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SwitchListTile.adaptive(
-        contentPadding: EdgeInsets.zero,
-        title: Text(title, style: context.text.titleSmall),
-        subtitle: subtitle == null ? null : Text(subtitle!, style: context.text.bodySmall),
-        value: value,
-        onChanged: onChanged,
-      );
+    contentPadding: EdgeInsets.zero,
+    title: Text(title, style: context.text.titleSmall),
+    subtitle: subtitle == null ? null : Text(subtitle!, style: context.text.bodySmall),
+    value: value,
+    onChanged: onChanged,
+  );
 }
 
 /// Opções exclusivas em linha (ex.: Hoje / 7 dias / Mês).
@@ -67,13 +70,13 @@ class CorreSegmented<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Wrap(
-        spacing: CorreSpace.sm,
-        runSpacing: CorreSpace.sm,
-        children: [
-          for (final e in options.entries)
-            CorreChip(label: e.value, selected: e.key == value, onTap: () => onChanged(e.key)),
-        ],
-      );
+    spacing: CorreSpace.sm,
+    runSpacing: CorreSpace.sm,
+    children: [
+      for (final e in options.entries)
+        CorreChip(label: e.value, selected: e.key == value, onTap: () => onChanged(e.key)),
+    ],
+  );
 }
 
 /// Caixa de seleção com rótulo.
@@ -85,17 +88,23 @@ class CorreCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CheckboxListTile(
-        contentPadding: EdgeInsets.zero,
-        controlAffinity: ListTileControlAffinity.leading,
-        title: Text(label, style: context.text.bodyLarge),
-        value: value,
-        onChanged: onChanged,
-      );
+    contentPadding: EdgeInsets.zero,
+    controlAffinity: ListTileControlAffinity.leading,
+    title: Text(label, style: context.text.bodyLarge),
+    value: value,
+    onChanged: onChanged,
+  );
 }
 
 /// Lista suspensa com rótulo.
 class CorreDropdown<T> extends StatelessWidget {
-  const CorreDropdown({super.key, required this.label, required this.items, required this.value, required this.onChanged});
+  const CorreDropdown({
+    super.key,
+    required this.label,
+    required this.items,
+    required this.value,
+    required this.onChanged,
+  });
   final String label;
   final Map<T, String> items;
   final T value;
@@ -103,16 +112,16 @@ class CorreDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(label, style: context.text.labelMedium),
-          const SizedBox(height: CorreSpace.xs + 2),
-          DropdownButtonFormField<T>(
-            initialValue: value,
-            items: [for (final e in items.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
-            onChanged: onChanged,
-          ),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Text(label, style: context.text.labelMedium),
+      const SizedBox(height: CorreSpace.xs + 2),
+      DropdownButtonFormField<T>(
+        initialValue: value,
+        items: [for (final e in items.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
+        onChanged: onChanged,
+      ),
+    ],
+  );
 }

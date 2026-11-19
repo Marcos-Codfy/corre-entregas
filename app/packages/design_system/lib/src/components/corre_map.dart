@@ -117,7 +117,7 @@ class _CorreMapViewState extends State<CorreMapView> {
               ),
           ],
         ),
-        const SimpleAttributionWidget(source: Text('OpenStreetMap')),
+        if (CorreMapView.showTiles) const SimpleAttributionWidget(source: Text('OpenStreetMap')),
       ],
     );
     return ClipRRect(borderRadius: widget.borderRadius ?? CorreRadius.mdAll, child: map);

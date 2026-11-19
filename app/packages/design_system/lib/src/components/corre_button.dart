@@ -63,7 +63,10 @@ class CorreButton extends StatelessWidget {
         opacity: onPressed == null ? .45 : 1,
         child: Material(
           color: bg,
-          shape: RoundedRectangleBorder(borderRadius: CorreRadius.mdAll, side: BorderSide(color: border, width: 1.5)),
+          shape: RoundedRectangleBorder(
+            borderRadius: CorreRadius.mdAll,
+            side: BorderSide(color: border, width: 1.5),
+          ),
           child: InkWell(
             borderRadius: CorreRadius.mdAll,
             onTap: enabled ? onPressed : null,
@@ -73,7 +76,10 @@ class CorreButton extends StatelessWidget {
               alignment: Alignment.center,
               child: DefaultTextStyle.merge(
                 style: TextStyle(color: fg, fontSize: font, fontWeight: FontWeight.w700),
-                child: IconTheme.merge(data: IconThemeData(color: fg), child: child),
+                child: IconTheme.merge(
+                  data: IconThemeData(color: fg),
+                  child: child,
+                ),
               ),
             ),
           ),
@@ -110,7 +116,10 @@ class CorreIconButton extends StatelessWidget {
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: onPressed,
-          child: Padding(padding: const EdgeInsets.all(CorreSpace.sm + 2), child: Icon(icon, size: 20, color: fg)),
+          child: Padding(
+            padding: const EdgeInsets.all(CorreSpace.sm + 2),
+            child: Icon(icon, size: 20, color: fg),
+          ),
         ),
       ),
     );

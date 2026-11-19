@@ -87,18 +87,18 @@ class _CorrePasswordFieldState extends State<CorrePasswordField> {
 
   @override
   Widget build(BuildContext context) => CorreTextField(
-        label: widget.label,
-        controller: widget.controller,
-        initialValue: widget.initialValue,
-        errorText: widget.errorText,
-        obscureText: _hidden,
-        prefixIcon: Icons.lock_outline,
-        suffix: IconButton(
-          tooltip: _hidden ? 'Mostrar senha' : 'Ocultar senha',
-          icon: Icon(_hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 20),
-          onPressed: () => setState(() => _hidden = !_hidden),
-        ),
-      );
+    label: widget.label,
+    controller: widget.controller,
+    initialValue: widget.initialValue,
+    errorText: widget.errorText,
+    obscureText: _hidden,
+    prefixIcon: Icons.lock_outline,
+    suffix: IconButton(
+      tooltip: _hidden ? 'Mostrar senha' : 'Ocultar senha',
+      icon: Icon(_hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 20),
+      onPressed: () => setState(() => _hidden = !_hidden),
+    ),
+  );
 }
 
 /// Máscara de telefone brasileiro: (63) 9 9999-0000.
@@ -106,7 +106,10 @@ class PhoneInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     final text = formatPhone(newValue.text);
-    return TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length));
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
   }
 }
 
@@ -132,7 +135,10 @@ class CurrencyInputFormatter extends TextInputFormatter {
     final digits = newValue.text.replaceAll(RegExp(r'\D'), '');
     final cents = int.tryParse(digits.isEmpty ? '0' : digits) ?? 0;
     final text = formatBrl(cents / 100);
-    return TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length));
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
   }
 }
 
@@ -155,7 +161,10 @@ class CorreSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final border = OutlineInputBorder(borderRadius: CorreRadius.pillAll, borderSide: BorderSide(color: context.palette.line));
+    final border = OutlineInputBorder(
+      borderRadius: CorreRadius.pillAll,
+      borderSide: BorderSide(color: context.palette.line),
+    );
     return TextField(
       controller: controller,
       onChanged: onChanged,
