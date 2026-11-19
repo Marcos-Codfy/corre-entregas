@@ -180,7 +180,8 @@ class _NewDeliveryPageState extends ConsumerState<NewDeliveryPage> {
     if (merchant == null) return const SizedBox.shrink();
     final service = ref.read(serviceProvider);
     final quote = _address == null ? null : service.quoteFor(merchant, _address!.point, extraStops: _extraStop ? 1 : 0, rainOrLateNight: _rain);
-    final wide = context.screenSize != CorreScreenSize.mobile;
+    // Lado a lado só com espaço de verdade (tablet deitado ou computador).
+    final wide = MediaQuery.sizeOf(context).width >= 900;
 
     final form = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (saved.isNotEmpty) ...[
