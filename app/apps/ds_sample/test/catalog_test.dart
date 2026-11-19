@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('todas as seções do catálogo abrem sem erro, no claro e no escuro', (tester) async {
+    CorreMapView.showTiles = false;
     tester.view.physicalSize = const Size(1400, 1000);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);

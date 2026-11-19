@@ -1,5 +1,6 @@
 import 'package:corre_design_system/corre_design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../main.dart';
 
@@ -84,6 +85,22 @@ class _DomainSectionState extends State<DomainSection> {
             const SizedBox(height: CorreSpace.sm),
             CorreDeliveryCard(code: '#PL-4810', title: 'Bia', subtitle: '307 Sul · cancelada pelo comércio', statusLabel: 'Cancelada', statusTone: CorreTone.error, value: 0, onTap: () {}),
           ]),
+        ),
+        DemoBlock(
+          title: 'Mapa',
+          description: 'OpenStreetMap, grátis e sem chave. Rota em "L", como as avenidas de Palmas.',
+          child: SizedBox(
+            height: 280,
+            child: CorreMapView(
+              zoom: 14,
+              route: correLRoute(const LatLng(-10.1918, -48.3258), const LatLng(-10.1985, -48.3239)),
+              pins: const [
+                CorreMapPin(point: LatLng(-10.1918, -48.3258), kind: CorreMarkerKind.pickup, label: 'Coleta'),
+                CorreMapPin(point: LatLng(-10.1985, -48.3239), kind: CorreMarkerKind.dropoff, label: 'Entrega'),
+                CorreMapPin(point: LatLng(-10.1940, -48.3256), kind: CorreMarkerKind.courier, label: 'Motoboy'),
+              ],
+            ),
+          ),
         ),
         const DemoBlock(
           title: 'Marcadores de mapa',
