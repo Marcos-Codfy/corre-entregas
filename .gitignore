@@ -24,3 +24,6 @@ build/
 .idea/
 pubspec_overrides.yaml
 entregas/
+
+# Cloudflare
+.wrangler/
