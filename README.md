@@ -20,7 +20,7 @@ No painel, escolha o perfil na tela de entrada (dono do comércio, atendente, su
 
 ## Como funciona
 
-1. O comércio informa o endereço do cliente, vê o valor (frete + taxa) e chama o motoboy. O valor sai do saldo pré-pago.
+1. O comércio informa o endereço do cliente (ou repete o pedido de um cliente frequente, confirmando antes que o endereço é o mesmo), vê o valor (frete + taxa) e chama o motoboy. O valor sai do saldo pré-pago.
 2. A oferta vai primeiro para os motoboys preferidos do comércio (até 3). Depois segue por proximidade, em raios de 5 e 7 km, e por fim para todos num raio de 10 km. Cada motoboy tem 20 segundos para aceitar, e recusar não gera punição.
 3. O comércio envia ao cliente, pelo WhatsApp, um link de rastreio e um código de 4 dígitos.
 4. O motoboy coleta, leva até o cliente e só conclui a entrega digitando o código. O frete vai 100% para ele.
@@ -32,7 +32,7 @@ Regras de preço da demonstração: R$ 8,00 até 5 km, mais R$ 1,50 por km adici
 
 **App do motoboy (Android e web):** cadastro em etapas com documentos, ficar online e offline, oferta com contagem regressiva, tela da corrida com mapa e etapas, atalhos para Google Maps, Waze e ligação, confirmação por código, espera de cliente ausente com retorno, relato de problemas, carteira com saque Pix simulado, histórico, regras públicas de frete e nota, e simulação de falta de internet (as ações ficam numa fila e são enviadas quando a conexão volta).
 
-**Painel do comércio:** pedido de entrega com busca de endereço e ajuste no mapa, acompanhamento em tempo real, envio do link pelo WhatsApp, cancelamento com a regra de 1 km, avaliação do motoboy, histórico com filtros e exportação em CSV, carteira com recarga Pix simulada, cupons, motoboys preferidos e equipe. O atendente não vê a parte financeira.
+**Painel do comércio:** economia do mês comparada ao iFood em destaque, clientes frequentes com repetição de pedido, pedido de entrega com busca de endereço e ajuste no mapa, acompanhamento em tempo real, envio do link pelo WhatsApp, cancelamento com a regra de 1 km, avaliação do motoboy, histórico com filtros e exportação em CSV, carteira com recarga Pix simulada, cupons, motoboys preferidos e equipe. O atendente não vê a parte financeira.
 
 **Painel do suporte e do admin:** mapa ao vivo com motoboys e entregas, fila sem aceite com despacho manual, ocorrências com checklist, aprovação de cadastros, indicadores (aceite em até 5 minutos, tempos, cancelamentos, receita, ganho por hora do motoboy, entregas por hora do dia), edição de preços, criação de cupons, lista de repasses Pix e registro de eventos.
 
@@ -62,6 +62,8 @@ Algumas decisões:
 - **Valores em centavos.** Todo cálculo de dinheiro usa inteiros, para evitar erros de arredondamento com números decimais.
 - **Registro de eventos.** Toda ação relevante (oferta enviada, aceite, recusa, cancelamento, mudança de preço) vira um evento com data, autor e posição. Isso serve para auditoria e para análises futuras. Nome e telefone do cliente são apagados quando a entrega termina.
 - **Mapa sem custo.** O mapa usa OpenStreetMap com `flutter_map`, sem chave de API.
+- **Melhor caminho com A\*.** As ruas de Palmas viram um grafo: cada cruzamento é um nó e cada trecho é uma aresta com o tempo de viagem (avenidas mais rápidas que ruas locais). O A\* é um algoritmo de busca usado em inteligência artificial: ele usa uma estimativa (a distância em linha reta na velocidade máxima) para abrir primeiro os caminhos mais promissores. Como essa estimativa nunca passa do tempo real, a rota encontrada é a mais rápida. A fila de prioridade é um heap binário, que entrega o próximo nó em tempo logarítmico. Os testes conferem que o A\* dá o mesmo resultado do Dijkstra abrindo menos nós.
+- **Telas adaptáveis.** O mesmo código atende celular, tablet em pé, tablet deitado e computador; os testes abrem as telas principais nesses tamanhos.
 
 ## Testes
 
