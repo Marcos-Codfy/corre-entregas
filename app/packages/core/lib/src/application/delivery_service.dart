@@ -28,8 +28,8 @@ class DeliveryService {
     PricingService pricing = const PricingService(),
     this.planner = const DispatchPlanner(),
     math.Random? random,
-  })  // ignore: prefer_initializing_formals
-      : _pricing = pricing,
+  })  : // ignore: prefer_initializing_formals
+        _pricing = pricing,
         _random = random ?? math.Random();
 
   final DeliveryRepository deliveries;
