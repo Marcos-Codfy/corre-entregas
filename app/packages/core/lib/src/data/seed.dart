@@ -77,8 +77,9 @@ abstract final class Seed {
     final active = couriers.where((c) => c.approval == ApprovalStatus.approved).toList();
     final list = <Delivery>[];
     var seq = 4000;
-    for (var day = days; day >= 1; day--) {
-      final count = 6 + r.nextInt(10);
+    // day 0 = hoje: algumas corridas já feitas, para a demonstração não abrir zerada.
+    for (var day = days; day >= 0; day--) {
+      final count = day == 0 ? 6 : 6 + r.nextInt(10);
       for (var i = 0; i < count; i++) {
         final m = approved[r.nextInt(approved.length)];
         final drop = places[r.nextInt(places.length)];
@@ -87,8 +88,10 @@ abstract final class Seed {
         final q = pricing.quote(km, rainOrLateNight: rain);
         // 60% no pico da noite (18h–22h), como lanchonetes e pizzarias.
         final hour = r.nextDouble() < .6 ? 18 + r.nextInt(5) : 11 + r.nextInt(7);
-        final created = DateTime(now.year, now.month, now.day - day, hour, r.nextInt(60));
-        final roll = r.nextDouble();
+        final created = day == 0
+            ? now.subtract(Duration(minutes: 50 + i * 45 + r.nextInt(15)))
+            : DateTime(now.year, now.month, now.day - day, hour, r.nextInt(60));
+        final roll = day == 0 ? 0.0 : r.nextDouble();
         final status = roll < .88
             ? DeliveryStatus.delivered
             : roll < .94
@@ -96,7 +99,9 @@ abstract final class Seed {
                 : roll < .97
                     ? DeliveryStatus.returned
                     : DeliveryStatus.noCourier;
-        final courier = status == DeliveryStatus.noCourier ? null : active[r.nextInt(active.length)];
+        final courier = status == DeliveryStatus.noCourier
+            ? null
+            : (day == 0 && i < 4 ? active.first : active[r.nextInt(active.length)]);
         final accept = created.add(Duration(seconds: 15 + r.nextInt(200)));
         final pick = accept.add(Duration(minutes: 5 + r.nextInt(12)));
         final done = pick.add(Duration(minutes: Geo.etaMinutes(km) + r.nextInt(8)));
