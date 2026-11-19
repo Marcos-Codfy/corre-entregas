@@ -1,39 +1,41 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# corre_design_system
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Design system do Corre em Flutter: tokens (cores, tipografia, espaçamentos, raios, sombras), tema claro e escuro e os componentes usados no app do motoboy, no painel web e no catálogo `ds_sample`.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Como usar
 
 ```dart
-const like = 'sample';
+import 'package:corre_design_system/corre_design_system.dart';
+
+MaterialApp(
+  theme: CorreTheme.light(),
+  darkTheme: CorreTheme.dark(),
+  home: Scaffold(
+    body: CorreButton(label: 'Pedir entregador', onPressed: () {}),
+  ),
+);
 ```
 
-## Additional information
+Cores do tema: `context.palette.brand`, `context.palette.ink2` etc. Estilos de texto: `context.text.titleMedium`.
+Status (sucesso, aviso, erro, informação) usam `CorreTone`, que define a cor do texto e do fundo.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## Organização
+
+| Pasta | Conteúdo |
+|---|---|
+| `lib/src/tokens` | Valores base: `CorreRawColors`, `CorrePalette`, `CorreSpace`, `CorreRadius`, `CorreShadow`, `CorreDuration`, `CorreTypography` |
+| `lib/src/theme` | `CorreTheme.light/dark` e a extensão `context.palette` |
+| `lib/src/components` | Botões, campos, seleção, exibição, feedback, componentes de entrega e layout |
+
+## Como adicionar um componente
+
+1. Crie o widget em `lib/src/components`, usando só tokens e `context.palette` (nada de cor ou número solto).
+2. Exporte em `lib/corre_design_system.dart`.
+3. Mostre o componente no catálogo (`apps/ds_sample/lib/sections`), com os estados que ele tiver.
+4. Escreva um teste em `test/` cobrindo o comportamento, inclusive os casos de erro.
+
+## Testes
+
+```bash
+flutter test
+```
