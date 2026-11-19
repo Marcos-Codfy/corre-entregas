@@ -25,10 +25,12 @@ class DeliveryService {
     required this.events,
     required this.incidents,
     this.clock = const SystemClock(),
-    this.pricing = const PricingService(),
+    PricingService pricing = const PricingService(),
     this.planner = const DispatchPlanner(),
     math.Random? random,
-  }) : _random = random ?? math.Random();
+  })  // ignore: prefer_initializing_formals
+      : _pricing = pricing,
+        _random = random ?? math.Random();
 
   final DeliveryRepository deliveries;
   final CourierRepository couriers;
@@ -37,13 +39,28 @@ class DeliveryService {
   final EventLog events;
   final IncidentRepository incidents;
   final Clock clock;
-  final PricingService pricing;
+  PricingService _pricing;
+  PricingService get pricing => _pricing;
   final DispatchPlanner planner;
   final math.Random _random;
   int _seq = 4900;
   int _escalationSpentThisMonth = 0;
 
   int get escalationSpentThisMonth => _escalationSpentThisMonth;
+
+  /// Admin muda a tabela de preços. Vale para as próximas entregas.
+  void updatePricing(PricingRules rules, {required String adminId}) {
+    if (rules.baseFreight <= 0 || rules.perExtraKm < 0 || rules.platformFee < 0 || rules.baseKm <= 0) {
+      throw BusinessError('Valores de preço inválidos');
+    }
+    final before = _pricing.rules;
+    _pricing = PricingService(rules);
+    _log('pricing.updated', actor: adminId, data: {
+      'baseFreight': [before.baseFreight, rules.baseFreight],
+      'perExtraKm': [before.perExtraKm, rules.perExtraKm],
+      'platformFee': [before.platformFee, rules.platformFee],
+    });
+  }
 
   String _id(String prefix) => '$prefix-${clock.now().microsecondsSinceEpoch}-${_random.nextInt(1 << 20)}';
 

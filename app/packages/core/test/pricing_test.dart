@@ -87,4 +87,11 @@ void main() {
     expect(formatCents(123456), 'R\$ 1.234,56');
     expect(formatCents(-300), '−R\$ 3,00');
   });
+
+  test('copyWith troca só o que foi pedido', () {
+    final r = const PricingRules().copyWith(baseFreight: 900);
+    expect(r.baseFreight, 900);
+    expect(r.perExtraKm, 150);
+    expect(PricingService(r).freightFor(6), 1050);
+  });
 }

@@ -56,6 +56,33 @@ class PricingRules {
   /// Aumento quando ninguém aceita em 5 min, pago pela plataforma até o teto mensal.
   final Cents escalationStep;
   final Cents escalationMonthlyBudget;
+
+  PricingRules copyWith({
+    Cents? baseFreight,
+    double? baseKm,
+    Cents? perExtraKm,
+    Cents? platformFee,
+    Cents? extraStop,
+    Cents? rainOrLateNight,
+    Cents? cancelFee,
+    Cents? escalationMonthlyBudget,
+  }) =>
+      PricingRules(
+        baseFreight: baseFreight ?? this.baseFreight,
+        baseKm: baseKm ?? this.baseKm,
+        perExtraKm: perExtraKm ?? this.perExtraKm,
+        kmRoundingStep: kmRoundingStep,
+        platformFee: platformFee ?? this.platformFee,
+        extraStop: extraStop ?? this.extraStop,
+        rainOrLateNight: rainOrLateNight ?? this.rainOrLateNight,
+        returnPercent: returnPercent,
+        waitFeePer10Min: waitFeePer10Min,
+        freeWaitMinutes: freeWaitMinutes,
+        cancelFee: cancelFee ?? this.cancelFee,
+        cancelFeeMinKm: cancelFeeMinKm,
+        escalationStep: escalationStep,
+        escalationMonthlyBudget: escalationMonthlyBudget ?? this.escalationMonthlyBudget,
+      );
 }
 
 /// Resultado de uma cotação.

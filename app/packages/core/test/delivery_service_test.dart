@@ -231,4 +231,13 @@ void main() {
     expect(m.successRate, inInclusiveRange(0, 1));
     expect(m.platformRevenue, m.delivered * 150);
   });
+
+  test('admin muda o preço: vale para a próxima entrega e valores inválidos são recusados', () async {
+    expect(() => s.updatePricing(const PricingRules(baseFreight: 0), adminId: 'a'), throwsA(isA<BusinessError>()));
+    s.updatePricing(const PricingRules().copyWith(platformFee: 100), adminId: 'a');
+    final d = await s.create(merchantId: merchantId, customer: customer, dropoff: drop);
+    expect(d.quote.platformFee, 100);
+    expect(env.events.all().first.type, 'delivery.created');
+    expect(env.events.all().any((e) => e.type == 'pricing.updated'), isTrue);
+  });
 }
