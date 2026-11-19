@@ -41,7 +41,12 @@ class RunPage extends ConsumerWidget {
 
     final action = RunAction.of(d.status);
     final target = ctrl.targetOf(d);
-    final left = ctrl.remainingKm(d);
+    // Melhor caminho (A*). No comércio já mostra o próximo trecho, até o cliente.
+    final atMerchant = d.status == DeliveryStatus.atMerchant;
+    final route = atMerchant
+        ? bestRoute(d.pickup.point, d.dropoff.point)
+        : (target == null ? null : bestRoute(me.position, target));
+    final left = atMerchant ? 0.0 : (route?.km ?? ctrl.remainingKm(d));
     final goingToCustomer = d.status == DeliveryStatus.toCustomer || d.status == DeliveryStatus.pickedUp;
     final idx = _stepIndex(d.status);
 
@@ -102,7 +107,7 @@ class RunPage extends ConsumerWidget {
               borderRadius: BorderRadius.zero,
               followPoint: me.position.latLng,
               zoom: 15,
-              route: target == null ? const [] : correLRoute(me.position.latLng, target.latLng),
+              route: route == null ? const [] : [for (final p in route.points) p.latLng],
               pins: [
                 CorreMapPin(point: d.pickup.point.latLng, kind: CorreMarkerKind.pickup, label: merchant?.name),
                 CorreMapPin(point: d.dropoff.point.latLng, kind: CorreMarkerKind.dropoff, label: d.customer.firstName),
@@ -128,8 +133,16 @@ class RunPage extends ConsumerWidget {
                       Flexible(child: CorreBadge(label: d.status.shortLabel, tone: d.status.tone)),
                       const SizedBox(width: CorreSpace.sm),
                       const Spacer(),
-                      if (target != null)
-                        Text('${km(left)} · ~${Geo.etaMinutes(left)} min', style: context.text.labelMedium),
+                      if (route != null)
+                        Flexible(
+                          child: Text(
+                            atMerchant
+                                ? 'Até o cliente: ${km(route.km)} · ~${route.etaMinutes} min'
+                                : '${km(route.km)} · ~${route.etaMinutes} min',
+                            style: context.text.labelMedium,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                     ],
                   ),
                   const SizedBox(height: CorreSpace.md),

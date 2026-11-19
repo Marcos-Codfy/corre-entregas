@@ -49,8 +49,9 @@ class WalletPage extends ConsumerWidget {
                           if (!ok) return;
                           try {
                             await ref.read(serviceProvider).withdraw(id);
-                            if (context.mounted)
+                            if (context.mounted) {
                               CorreToast.show(context, 'Pix solicitado. Cai hoje até as 23h.', tone: CorreTone.success);
+                            }
                           } on BusinessError catch (e) {
                             if (context.mounted) CorreToast.show(context, e.message, tone: CorreTone.error);
                           }

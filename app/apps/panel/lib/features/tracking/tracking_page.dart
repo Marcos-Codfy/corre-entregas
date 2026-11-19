@@ -24,7 +24,7 @@ class TrackingPage extends ConsumerWidget {
     }
     final merchant = ref.watch(merchantProvider(d.merchantId)).value;
     final courier = d.courierId == null ? null : ref.watch(courierProvider(d.courierId!)).value;
-    final eta = courier == null || d.status.isFinal ? null : Geo.etaMinutes(Geo.roadKm(courier.position, d.dropoff.point));
+    final eta = courier == null || d.status.isFinal ? null : bestRoute(courier.position, d.dropoff.point).etaMinutes;
 
     final headline = switch (d.status) {
       DeliveryStatus.searching => 'Estamos chamando um motoboy',
@@ -57,6 +57,7 @@ class TrackingPage extends ConsumerWidget {
                   followPoint: courier?.position.latLng,
                   fitToPins: courier == null,
                   center: courier == null ? d.dropoff.point.latLng : null,
+                  route: courier != null && !d.status.isFinal ? bestRouteLatLng(courier.position, d.dropoff.point) : const [],
                   pins: [
                     CorreMapPin(point: d.pickup.point.latLng, kind: CorreMarkerKind.pickup),
                     CorreMapPin(point: d.dropoff.point.latLng, kind: CorreMarkerKind.dropoff),

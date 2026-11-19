@@ -73,7 +73,7 @@ class _OfferOverlayState extends ConsumerState<OfferOverlay> {
                       interactive: false,
                   fitToPins: true,
                       zoom: 13,
-                      route: correLRoute(d.pickup.point.latLng, d.dropoff.point.latLng),
+                      route: bestRouteLatLng(d.pickup.point, d.dropoff.point),
                       pins: [
                         if (me != null) CorreMapPin(point: me.position.latLng, kind: CorreMarkerKind.courier),
                         CorreMapPin(point: d.pickup.point.latLng, kind: CorreMarkerKind.pickup),

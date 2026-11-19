@@ -75,3 +75,15 @@ String timeAgo(DateTime t, DateTime now) {
   if (d.inDays == 1) return 'ontem';
   return 'há ${d.inDays} dias';
 }
+
+/// Melhor rota (A*) entre dois pontos, com cache: a mesma rota é pedida a cada quadro do mapa.
+final _routeCache = <String, RouteResult>{};
+
+RouteResult bestRoute(GeoPoint a, GeoPoint b) {
+  String k(GeoPoint p) => '${p.lat.toStringAsFixed(4)},${p.lng.toStringAsFixed(4)}';
+  final key = '${k(a)}>${k(b)}';
+  if (_routeCache.length > 200) _routeCache.clear();
+  return _routeCache.putIfAbsent(key, () => PalmasRoads.graph.route(a, b));
+}
+
+List<LatLng> bestRouteLatLng(GeoPoint a, GeoPoint b) => [for (final p in bestRoute(a, b).points) p.latLng];

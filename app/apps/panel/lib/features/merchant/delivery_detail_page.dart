@@ -38,7 +38,11 @@ class DeliveryDetailPage extends ConsumerWidget {
         zoom: 14,
         followPoint: courier?.position.latLng,
         center: courier == null ? d.pickup.point.latLng : null,
-        route: correLRoute(d.pickup.point.latLng, d.dropoff.point.latLng),
+        route: courier != null && !d.status.isFinal && d.status.index < DeliveryStatus.pickedUp.index
+            ? [...bestRouteLatLng(courier.position, d.pickup.point), ...bestRouteLatLng(d.pickup.point, d.dropoff.point)]
+            : courier != null && !d.status.isFinal
+                ? bestRouteLatLng(courier.position, d.dropoff.point)
+                : bestRouteLatLng(d.pickup.point, d.dropoff.point),
         pins: [
           CorreMapPin(point: d.pickup.point.latLng, kind: CorreMarkerKind.pickup, label: merchant?.name),
           CorreMapPin(point: d.dropoff.point.latLng, kind: CorreMarkerKind.dropoff, label: d.customer.firstName),
@@ -67,7 +71,7 @@ class DeliveryDetailPage extends ConsumerWidget {
             leading: CorreAvatar(name: courier.name),
             title: courier.name,
             subtitle: '${courier.bikeModel} · ★ ${courier.rating?.toStringAsFixed(1) ?? 'novo'}'
-                '${d.status.isActive && !d.status.isFinal ? ' · chega em ~${Geo.etaMinutes(Geo.roadKm(courier.position, d.status.index < DeliveryStatus.pickedUp.index ? d.pickup.point : d.dropoff.point))} min' : ''}',
+                '${d.status.isActive && !d.status.isFinal ? ' · chega em ~${bestRoute(courier.position, d.status.index < DeliveryStatus.pickedUp.index ? d.pickup.point : d.dropoff.point).etaMinutes} min' : ''}',
             trailing: CorreIconButton(icon: Icons.phone, tooltip: 'Ligar', tone: CorreTone.brand, onPressed: () => ExternalLinks.open(ExternalLinks.phone(courier.phone))),
           ),
         ),
