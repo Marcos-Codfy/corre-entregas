@@ -67,14 +67,14 @@ app/
 - [x] B2. core: contratos de repositório + implementações fake com seed realista de Palmas (comércios, endereços por quadra, motoboys, histórico) e registro de eventos.
 - [x] B3. core: simulador (gera ofertas, cascata de 20 s, raios 5/7/10 km, preferidos primeiro, movimento GPS interpolado a cada 7 s acelerado, cliente ausente, ocorrência).
 - [x] B4. Testes unitários: preço, estados (transições válidas e inválidas), despacho, cancelamento.
-- [ ] B5. App courier: estrutura, rotas, tema, modo demonstração (escolher perfil, sem cadastro).
-- [ ] B6. Telas de entrada: splash, login (e-mail/Google simulados), cadastro com envio de documentos (CNH A definitiva com EAR, CRLV, selfie, Pix) e status de aprovação.
-- [ ] B7. Início: online/offline, ganhos do dia, mapa com posição, pico de hoje, comércios que preferem você.
-- [ ] B8. Oferta: card com contagem de 20 s, aceitar/recusar (sem penalidade), som/vibração.
-- [ ] B9. Corrida: etapas (indo ao comércio → no comércio → coletado → indo ao cliente → no cliente), mapa, abrir Maps/Waze, ligar, relatar problema.
-- [ ] B10. Prova de entrega por código de 4 dígitos; cliente sem código (ligar ao comércio); cliente ausente (espera 10 min, retorno +50%).
-- [ ] B11. Carteira (saldo, extrato, saque Pix simulado), histórico de corridas, nota e regras, perfil (moto: só modelo), ajuda/suporte, termos.
-- [ ] B12. Estados de erro, sem GPS, sem internet (fila offline simulada), permissões.
+- [x] B5. App courier: estrutura, rotas, tema, modo demonstração (escolher perfil, sem cadastro).
+- [x] B6. Telas de entrada: splash, login (e-mail/Google simulados), cadastro com envio de documentos (CNH A definitiva com EAR, CRLV, selfie, Pix) e status de aprovação.
+- [x] B7. Início: online/offline, ganhos do dia, mapa com posição, pico de hoje, comércios que preferem você.
+- [x] B8. Oferta: card com contagem de 20 s, aceitar/recusar (sem penalidade), som/vibração.
+- [x] B9. Corrida: etapas (indo ao comércio → no comércio → coletado → indo ao cliente → no cliente), mapa, abrir Maps/Waze, ligar, relatar problema.
+- [x] B10. Prova de entrega por código de 4 dígitos; cliente sem código (ligar ao comércio); cliente ausente (espera 10 min, retorno +50%).
+- [x] B11. Carteira (saldo, extrato, saque Pix simulado), histórico de corridas, nota e regras, perfil (moto: só modelo), ajuda/suporte, termos.
+- [x] B12. Estados de erro, sem GPS, sem internet (fila offline simulada), permissões.
 - [ ] B13. Ícone, splash nativa, nome do app, keystore, `flutter build apk --release`; testar no emulador; copiar APK para `entregas/`.
 
 ## Parte C — Painel web (comércio + suporte/admin)
@@ -96,3 +96,4 @@ app/
 - 2026-11-19: A0–A7 feitos (workspace, tokens, tema claro/escuro, componentes). Próximo: A8 ds_sample.
 - 2026-11-19: Parte A concluída. Catálogo: https://corre-design-system.vinicius-codfy.workers.dev . Repo: https://github.com/Marcos-Codfy/corre-entregas . Link no site do estudo fica para o F2. Próximo: B1.
 - 2026-11-19: B1–B4 feitos (core: domínio, repositórios em memória, DeliveryService, Simulator, DemoEnvironment, 50 testes). Próximo: B5 app courier.
+- 2026-11-19: B5–B12 feitos (app courier completo, 6 testes). Pacote novo packages/shared (providers, apresentação, links). B13 em andamento: keystore em C:/Users/Marcos/.corre-keys (senha em android/key.properties, fora do git). Sem AVD na máquina: conferir visual pela versão web do courier.
