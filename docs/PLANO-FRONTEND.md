@@ -63,10 +63,10 @@ app/
 - [x] A10. Publicar ds_sample (Cloudflare Pages) e atualizar o site do estudo com o link.
 
 ## Parte B — App do motoboy (Android)
-- [ ] B1. core/domínio: entidades (Courier, Merchant, Delivery, Address, Offer, Wallet, Payout, Rating, Event), enums de estado, máquina de estados da entrega (03-produto), regra de preço (R$ 8 até 5 km + R$ 1,50/km arredondando 0,5 km; adicionais), regra de cancelamento (R$ 3 após 1 km), elegibilidade (nota ≥ 4,0).
-- [ ] B2. core: contratos de repositório + implementações fake com seed realista de Palmas (comércios, endereços por quadra, motoboys, histórico) e registro de eventos.
-- [ ] B3. core: simulador (gera ofertas, cascata de 20 s, raios 5/7/10 km, preferidos primeiro, movimento GPS interpolado a cada 7 s acelerado, cliente ausente, ocorrência).
-- [ ] B4. Testes unitários: preço, estados (transições válidas e inválidas), despacho, cancelamento.
+- [x] B1. core/domínio: entidades (Courier, Merchant, Delivery, Address, Offer, Wallet, Payout, Rating, Event), enums de estado, máquina de estados da entrega (03-produto), regra de preço (R$ 8 até 5 km + R$ 1,50/km arredondando 0,5 km; adicionais), regra de cancelamento (R$ 3 após 1 km), elegibilidade (nota ≥ 4,0).
+- [x] B2. core: contratos de repositório + implementações fake com seed realista de Palmas (comércios, endereços por quadra, motoboys, histórico) e registro de eventos.
+- [x] B3. core: simulador (gera ofertas, cascata de 20 s, raios 5/7/10 km, preferidos primeiro, movimento GPS interpolado a cada 7 s acelerado, cliente ausente, ocorrência).
+- [x] B4. Testes unitários: preço, estados (transições válidas e inválidas), despacho, cancelamento.
 - [ ] B5. App courier: estrutura, rotas, tema, modo demonstração (escolher perfil, sem cadastro).
 - [ ] B6. Telas de entrada: splash, login (e-mail/Google simulados), cadastro com envio de documentos (CNH A definitiva com EAR, CRLV, selfie, Pix) e status de aprovação.
 - [ ] B7. Início: online/offline, ganhos do dia, mapa com posição, pico de hoje, comércios que preferem você.
@@ -95,3 +95,4 @@ app/
 - 2026-11-19: plano criado. Aguardando "comece".
 - 2026-11-19: A0–A7 feitos (workspace, tokens, tema claro/escuro, componentes). Próximo: A8 ds_sample.
 - 2026-11-19: Parte A concluída. Catálogo: https://corre-design-system.vinicius-codfy.workers.dev . Repo: https://github.com/Marcos-Codfy/corre-entregas . Link no site do estudo fica para o F2. Próximo: B1.
+- 2026-11-19: B1–B4 feitos (core: domínio, repositórios em memória, DeliveryService, Simulator, DemoEnvironment, 50 testes). Próximo: B5 app courier.
