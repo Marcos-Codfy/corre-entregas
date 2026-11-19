@@ -14,3 +14,4 @@ export 'src/domain/entities.dart';
 export 'src/domain/geo.dart';
 export 'src/domain/pricing.dart';
 export 'src/domain/repositories.dart';
+export 'src/domain/routing.dart';

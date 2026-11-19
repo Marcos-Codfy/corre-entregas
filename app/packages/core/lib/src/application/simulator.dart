@@ -6,6 +6,7 @@ import '../domain/delivery_status.dart';
 import '../domain/dispatch.dart';
 import '../domain/entities.dart';
 import '../domain/geo.dart';
+import '../domain/routing.dart';
 import 'delivery_service.dart';
 
 /// Oferta de corrida mostrada a um motoboy.
@@ -100,9 +101,12 @@ class Simulator {
   /// Oferta recusada ou expirada: outro motoboy simulado pega.
   Future<void> handOffToOthers(String deliveryId, {String? except}) => runDispatch(deliveryId, skip: {?except});
 
-  /// Move o motoboy em direção ao alvo da etapa atual (coleta ou cliente).
+  /// Move o motoboy pela melhor rota (A* na malha de ruas) até o alvo da etapa atual.
   void followRoute(String courierId, String deliveryId, {double kmPerTick = .12}) {
     _moving[courierId]?.cancel();
+    List<GeoPoint> path = const [];
+    GeoPoint? pathTarget;
+    var idx = 0;
     _moving[courierId] = Timer.periodic(tick, (t) async {
       final d = service.deliveries.byId(deliveryId);
       final c = service.couriers.byId(courierId);
@@ -117,12 +121,28 @@ class Simulator {
         _ => null,
       };
       if (target == null) return;
-      final left = Geo.straightKm(c.position, target);
-      if (left < .01) return;
-      final step = math.min(1.0, kmPerTick / left);
-      final next = Geo.lerp(c.position, target, step);
-      await service.couriers.save(c.copyWith(position: next));
-      await service.deliveries.save(d.copyWith(courierTraveledKm: d.courierTraveledKm + Geo.straightKm(c.position, next) * Geo.roadFactor));
+      if (target != pathTarget) {
+        path = PalmasRoads.graph.route(c.position, target).points;
+        pathTarget = target;
+        idx = 0;
+      }
+      if (Geo.straightKm(c.position, target) < .01) return;
+      // Anda kmPerTick ao longo dos pontos da rota.
+      var budget = kmPerTick;
+      var pos = c.position;
+      while (budget > 0 && idx < path.length) {
+        final seg = Geo.straightKm(pos, path[idx]);
+        if (seg <= budget) {
+          budget -= seg;
+          pos = path[idx];
+          idx++;
+        } else {
+          pos = Geo.lerp(pos, path[idx], budget / seg);
+          budget = 0;
+        }
+      }
+      await service.couriers.save(c.copyWith(position: pos));
+      await service.deliveries.save(d.copyWith(courierTraveledKm: d.courierTraveledKm + Geo.straightKm(c.position, pos) * Geo.roadFactor));
     });
   }
 
