@@ -27,6 +27,7 @@ class CorreMapView extends StatefulWidget {
     this.onTap,
     this.interactive = true,
     this.borderRadius,
+    this.fitToPins = false,
   });
 
   final List<CorreMapPin> pins;
@@ -39,6 +40,9 @@ class CorreMapView extends StatefulWidget {
   final void Function(LatLng point)? onTap;
   final bool interactive;
   final BorderRadius? borderRadius;
+
+  /// Enquadra todos os marcadores ao abrir (ex.: oferta com coleta e entrega).
+  final bool fitToPins;
 
   /// Centro de Palmas-TO.
   static const palmas = LatLng(-10.1844, -48.3336);
@@ -81,6 +85,13 @@ class _CorreMapViewState extends State<CorreMapView> {
       options: MapOptions(
         initialCenter: _initial,
         initialZoom: widget.zoom,
+        initialCameraFit: widget.fitToPins && widget.pins.length >= 2
+            ? CameraFit.bounds(
+                bounds: LatLngBounds.fromPoints([for (final p in widget.pins) p.point]),
+                padding: const EdgeInsets.all(36),
+                maxZoom: 16,
+              )
+            : null,
         onMapReady: () => _ready = true,
         onTap: widget.onTap == null ? null : (_, point) => widget.onTap!(point),
         interactionOptions: InteractionOptions(

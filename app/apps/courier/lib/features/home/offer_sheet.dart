@@ -71,6 +71,7 @@ class _OfferOverlayState extends ConsumerState<OfferOverlay> {
                     height: 140,
                     child: CorreMapView(
                       interactive: false,
+                  fitToPins: true,
                       zoom: 13,
                       route: correLRoute(d.pickup.point.latLng, d.dropoff.point.latLng),
                       pins: [

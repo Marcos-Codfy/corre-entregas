@@ -55,6 +55,7 @@ class TrackingPage extends ConsumerWidget {
                 child: CorreMapView(
                   zoom: 14,
                   followPoint: courier?.position.latLng,
+                  fitToPins: courier == null,
                   center: courier == null ? d.dropoff.point.latLng : null,
                   pins: [
                     CorreMapPin(point: d.pickup.point.latLng, kind: CorreMarkerKind.pickup),

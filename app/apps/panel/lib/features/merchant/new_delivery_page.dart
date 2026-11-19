@@ -167,6 +167,7 @@ class _NewDeliveryPageState extends ConsumerState<NewDeliveryPage> {
           center: merchant.address.point.latLng,
           zoom: 13,
           onTap: _pinOnMap,
+          fitToPins: _address != null,
           route: _address == null ? const [] : correLRoute(merchant.address.point.latLng, _address!.point.latLng),
           pins: [
             CorreMapPin(point: merchant.address.point.latLng, kind: CorreMarkerKind.pickup),
